@@ -31,3 +31,21 @@ body {
     text-wrap: balance;
   }
 }
+
+/* Quill Style */
+.txt-editor {
+  margin: 30px;
+  /* border: 1px solid #ccc; */
+  border-radius: 4px;
+}
+
+/* Quill CSS */
+
+.ql-toolbar {
+  border-radius: 4px 4px 0px 0px;
+  background-color: white;
+}
+
+.ql-container {
+  border-radius: 0px 0px 4px 4px;
+}

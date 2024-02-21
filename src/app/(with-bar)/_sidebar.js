@@ -31,7 +31,7 @@ const menuList = [
 export default function Sidebar() {
   const pathname = usePathname();
   return (
-    <nav className="flex h-screen w-1/4 flex-col bg-white">
+    <nav className="flex h-screen w-1/4 flex-col bg-white sticky top-0">
       <ul className="flex flex-col mt-16">
         {menuList.map((menu) => (
           <Menu

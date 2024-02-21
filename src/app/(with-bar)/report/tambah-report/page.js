@@ -1,10 +1,18 @@
 "use client";
 
+import { useState } from "react";
 import InputBar from "@/app/ui/dashboard/inputBar";
 import QuillBar from "@/app/ui/dashboard/quillBar";
 import Button from "@/app/ui/auth/button";
 
 export default function AddReport() {
+  const [reportDate, setReportDate] = useState();
+
+  const handleChangeReportDate = (e) => {
+    setReportDate(e.target.value);
+    console.log(e.target.value);
+  };
+
   return (
     <>
       <div className="mt-4 bg-white rounded-xl w-full p-4 flex items-center">
@@ -21,9 +29,17 @@ export default function AddReport() {
               { label: "Option 3", value: "option3" },
             ]}
           />
-          <InputBar labelText="Tanggal Report" inputType="date" />
+          <InputBar
+            labelText="Tanggal Report"
+            inputType="dateStart"
+            handleChange={handleChangeReportDate}
+          />
 
-          <InputBar labelText="End Project" inputType="date" />
+          <InputBar
+            labelText="End Project"
+            inputType="dateEnd"
+            minDate={reportDate}
+          />
 
           <InputBar
             labelText="Metode Pengujian"

@@ -3,6 +3,8 @@ export default function InputBar({
   className = "",
   inputType = "text",
   options = [],
+  handleChange = () => {},
+  minDate = null,
 }) {
   return (
     <>
@@ -20,11 +22,19 @@ export default function InputBar({
             </option>
           ))}
         </select>
-      ) : inputType === "date" ? (
+      ) : inputType === "dateStart" ? (
         <input
           name={labelText}
           type="date"
           className={`w-full rounded bg-[#F6F6F6] border border-[#BFBFBF] focus:outline-none p-2 my-2 ${className}`}
+          onChange={handleChange}
+        />
+      ) : inputType === "dateEnd" ? (
+        <input
+          name={labelText}
+          type="date"
+          className={`w-full rounded bg-[#F6F6F6] border border-[#BFBFBF] focus:outline-none p-2 my-2 ${className}`}
+          min={minDate}
         />
       ) : (
         <input
