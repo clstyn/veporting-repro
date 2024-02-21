@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { SiWindows } from "react-icons/si";
 import { HiMiniDocumentText } from "react-icons/hi2";
 import { IoTime } from "react-icons/io5";
+import Link from "next/link";
 
 const menuList = [
   {
@@ -51,7 +52,8 @@ export default function Sidebar() {
 
 const Menu = ({ active, Icon = null, text = "", href = "" }) => {
   return (
-    <li
+    <Link
+      href={href}
       className={clsx(
         "flex gap-4 items-center w-full h-16 px-12",
         active ? "bg-red-700 text-white" : "text-gray-600"
@@ -59,6 +61,6 @@ const Menu = ({ active, Icon = null, text = "", href = "" }) => {
     >
       <Icon size={24} />
       <span className="text-lg">{text}</span>
-    </li>
+    </Link>
   );
 };
