@@ -54,7 +54,7 @@ export default function Page() {
       <form onSubmit={onSubmit}>
         <div className="mt-4">
           <div className="flex flex-col">
-            <label for="email" className="font-medium font-[#535353] mb-2">
+            <label htmlFor="email" className="font-medium font-[#535353] mb-2">
               Email
             </label>
             <input
@@ -67,7 +67,7 @@ export default function Page() {
 
         <div className="mt-4">
           <div className="flex flex-col">
-            <label for="password" className="font-medium font-[#535353] mb-2">
+            <label htmlFor="password" className="font-medium font-[#535353] mb-2">
               Password
             </label>
             <input
@@ -85,7 +85,7 @@ export default function Page() {
 
       {error && <div className="text-red-900 font-bold">{error}</div>}
 
-      <Link href={`/auth/reset-password`}>
+      <Link href={`/auth/verify`}>
         <p className="w-full text-end text-red-700 my-4 hover:underline">
           Reset Password
         </p>
