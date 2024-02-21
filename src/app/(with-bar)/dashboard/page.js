@@ -80,7 +80,7 @@ export default function Home() {
       {/* Tabel */}
       <div className="p-6 text-lg col-span-3 bg-white rounded-xl">
         <p className="font-semibold">Ongoing Project</p>
-        {/* <Table /> */}
+        <Table className="mt-4" />
       </div>
     </div>
   );

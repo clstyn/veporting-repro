@@ -24,7 +24,7 @@ const menuList = [
     id: "menu-3",
     text: "Activity Log",
     icon: IoTime,
-    href: "/activiy-log",
+    href: "/activity-log",
   },
 ];
 
