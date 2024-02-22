@@ -36,6 +36,21 @@ export default function InputBar({
           className={`w-full rounded bg-[#F6F6F6] border border-[#BFBFBF] focus:outline-none p-2 my-2 ${className}`}
           min={minDate}
         />
+      ) : inputType === "radioChoice" ? (
+        <fieldset>
+          <div>
+            <input type="radio" id="open" name="drone" value="open" />
+            <label className="ml-2" for="open">
+              Open
+            </label>
+          </div>
+          <div>
+            <input type="radio" id="close" name="drone" value="close" />
+            <label className="ml-2" for="close">
+              Closed
+            </label>
+          </div>
+        </fieldset>
       ) : (
         <input
           name={labelText}

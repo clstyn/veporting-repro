@@ -5,7 +5,7 @@ import InputBar from "@/app/ui/dashboard/inputBar";
 import QuillBar from "@/app/ui/dashboard/quillBar";
 import Button from "@/app/ui/auth/button";
 
-export default function AddReport() {
+export default function EditReport() {
   const [reportDate, setReportDate] = useState();
 
   const handleChangeReportDate = (e) => {
@@ -63,7 +63,7 @@ export default function AddReport() {
 
           <InputBar labelText="Jenis Target" />
 
-          <QuillBar label="Alamat Target" />
+          <QuillBar className="mt-4" label="Alamat Target" />
 
           <div className="flex gap-4 mt-4">
             <div>
@@ -74,9 +74,17 @@ export default function AddReport() {
             </div>
           </div>
 
-          <Button type={"submit"} className="mt-4 !w-[150px] self-end p-4">
-            Tambahkan
-          </Button>
+          <div className="flex gap-4 justify-end">
+            <Button
+              type={"button"}
+              className="mt-4 !w-[150px] p-4 !bg-[#FFEEF0] !text-red-700"
+            >
+              Batal
+            </Button>
+            <Button type={"submit"} className="mt-4 !w-[150px] p-4">
+              Simpan
+            </Button>
+          </div>
         </form>
       </div>
     </>

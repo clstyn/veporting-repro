@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const TableBody = ({ tableData, columns, withAction }) => {
   return (
     <tbody>
@@ -7,9 +9,17 @@ const TableBody = ({ tableData, columns, withAction }) => {
             {columns.map(({ accessor }) => {
               const tData = data[accessor] ? data[accessor] : "——";
               return (
-                <td key={accessor} className="py-4 pl-4">
-                  {tData}
-                </td>
+                <>
+                  {accessor === "klien" ? (
+                    <td key={accessor} className="py-4 pl-4 cursor-pointer">
+                      <Link href={`/report/project-detail`}>{tData}</Link>
+                    </td>
+                  ) : (
+                    <td key={accessor} className="py-4 pl-4">
+                      {tData}
+                    </td>
+                  )}
+                </>
               );
             })}
 

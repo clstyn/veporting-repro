@@ -42,15 +42,15 @@ export default function QuillBar({ label = "" }) {
 
   return (
     <main>
-      <div className="flex items-left flex-col">
+      <div className="flex items-left flex-col mt-2">
         <p className="text-sm font-medium">{label}</p>
-        <div className="h-full w-full h-[112px]">
+        <div className="h-full w-full">
           <QuillEditor
             value={content}
             onChange={handleEditorChange}
             modules={quillModules}
             formats={quillFormats}
-            className="w-full h-[70%] mt-1 bg-[#F6F6F6]"
+            className="w-full mt-1 bg-[#F6F6F6]"
           />
         </div>
       </div>

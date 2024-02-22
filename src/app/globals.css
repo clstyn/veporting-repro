@@ -34,8 +34,9 @@ body {
 
 /* Quill Style */
 .txt-editor {
+  height: 150px;
   margin: 30px;
-  /* border: 1px solid #ccc; */
+  border: 1px solid #ccc;
   border-radius: 4px;
 }
 
