@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { FaPlusCircle } from "react-icons/fa";
 import Link from "next/link";
 
@@ -8,6 +9,31 @@ import SearchBar from "@/app/ui/dashboard/searchBar";
 import Table from "@/app/ui/dashboard/table/table";
 
 export default function Report() {
+  const [reports, setReports] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://38.47.180.110:3000/report/all");
+      if (!response.ok) {
+        console.log(response.status, response.statusText);
+        const data = await response.json();
+        throw new Error(data.error);
+      }
+      const data = await response.json();
+      setReports(data);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    console.log(reports);
+  }, [reports]);
+
   return (
     <>
       <Link href={`/report/tambah-report`}>
