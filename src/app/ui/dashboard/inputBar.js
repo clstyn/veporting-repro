@@ -13,7 +13,7 @@ export default function InputBar({
   removeSelectedImage = () => {},
   handleDrop = () => {},
   handleDragOver = () => {},
-  usePasteUpload = () => {},
+  handlePasteImage = () => {},
 }) {
   return (
     <>
@@ -61,32 +61,42 @@ export default function InputBar({
           </div>
         </fieldset>
       ) : inputType === "images" ? (
-        <div className="h-[124px] w-full rounded bg-[#F6F6F6] border border-[#BFBFBF] focus:outline-none p-2 my-2 flex flex-wrap gap-2">
-          {selectedImages.map((image, index) => (
-            <div key={index} className="h-full aspect-square">
-              <Image
-                src={URL.createObjectURL(image)}
-                width={200}
-                height={200}
-                alt={`Thumb ${index + 1}`}
-              />
-            </div>
-          ))}
-          <input
-            id="imagesUpload"
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={imagesChange}
-          />
-          <label
-            htmlFor="imagesUpload"
-            className="custom-file-upload h-full aspect-square flex flex-col justify-center items-center cursor-pointer"
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
+        <div>
+          <div className="h-[124px] w-full rounded bg-[#F6F6F6] border border-[#BFBFBF] focus:outline-none p-2 my-2 flex flex-wrap gap-2">
+            {selectedImages.map((image, index) => (
+              <div key={index} className="h-full aspect-square">
+                <Image
+                  src={URL.createObjectURL(image)}
+                  width={200}
+                  height={200}
+                  alt={`Thumb ${index + 1}`}
+                />
+              </div>
+            ))}
+            <input
+              id="imagesUpload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={imagesChange}
+            />
+            <label
+              htmlFor="imagesUpload"
+              className="custom-file-upload h-full aspect-square flex flex-col justify-center items-center cursor-pointer"
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+            >
+              <CiCirclePlus size={32} /> Tambah
+            </label>
+          </div>
+          <div
+            className="w-full bg-[#F6F6F6] border border-[#BFBFBF] rounded"
+            onPaste={handlePasteImage}
           >
-            <CiCirclePlus size={32} /> Tambah
-          </label>
+            <p className="text-center py-2 italic">
+              Atau tempelkan gambar di sini
+            </p>
+          </div>
         </div>
       ) : (
         <input

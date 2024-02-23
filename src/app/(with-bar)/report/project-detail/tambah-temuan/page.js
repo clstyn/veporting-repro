@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputBar from "@/app/ui/dashboard/inputBar";
 import QuillBar from "@/app/ui/dashboard/quillBar";
 import Button from "@/app/ui/auth/button";
@@ -32,6 +32,20 @@ export default function AddTemuan() {
   const handleDragOver = (e) => {
     e.preventDefault();
   };
+
+  const handlePaste = (e) => {
+    const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf("image") !== -1) {
+        const imageBlob = items[i].getAsFile();
+        setSelectedImages((prevImages) => [...prevImages, imageBlob]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    console.log(selectedImages);
+  }, [selectedImages]);
 
   return (
     <>
@@ -67,7 +81,7 @@ export default function AddTemuan() {
               imagesChange={handleAddImages}
               handleDrop={handleDrop}
               handleDragOver={handleDragOver}
-              usePasteUpload={usePasteUpload}
+              handlePasteImage={handlePaste}
             />
           </Uploady>
 
