@@ -26,17 +26,19 @@ const dummyData = [
   },
 ];
 
-const Table = ({ className = "", actionable = true, children }) => {
-  const [tableData, setTableData] = useState(dummyData);
-
-  const columns = [
+const Table = ({
+  tableData = [],
+  columns = [
     { label: "Klien", accessor: "klien", sortable: true },
     { label: "Jenis Report", accessor: "jenisReport", sortable: true },
     { label: "Author", accessor: "author", sortable: true },
     { label: "End Project", accessor: "endProject", sortable: true },
     { label: "Status", accessor: "status", sortable: true },
-  ];
-
+  ],
+  className = "",
+  actionable = true,
+  children,
+}) => {
   // const handleSorting = (sortField, sortOrder) => {
   //   if (sortField) {
   //     const sorted = [...tableData].sort((a, b) => {

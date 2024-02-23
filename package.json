@@ -10,13 +10,16 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",
+    "@rpldy/upload-paste": "^1.8.0",
+    "@rpldy/uploady": "^1.8.0",
     "chart.js": "^4.4.1",
     "clsx": "^2.1.0",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.0.1",
-    "react-quill": "^2.0.0"
+    "react-quill": "^2.0.0",
+    "swr": "^2.2.5"
   },
   "devDependencies": {
     "@types/node": "20.11.19",

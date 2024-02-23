@@ -8,6 +8,7 @@ import { HiMiniDocumentCheck } from "react-icons/hi2";
 import LineChart from "@/app/(with-bar)/dashboard/_linechart";
 import PieChart from "@/app/(with-bar)/dashboard/_piechart";
 import Table from "@/app/ui/dashboard/table/table";
+import { useReportsData } from "@/app/dataServices";
 
 const cardList = [
   {
@@ -34,6 +35,8 @@ const cardList = [
 ];
 
 export default function Home() {
+  const { reports, isLoading, isError } = useReportsData();
+
   return (
     <div className="rounded-xl grid grid-cols-3 gap-4">
       {/* Overview */}
@@ -80,7 +83,17 @@ export default function Home() {
       {/* Tabel */}
       <div className="p-6 text-lg col-span-3 bg-white rounded-xl">
         <p className="font-semibold">Ongoing Project</p>
-        <Table className="mt-4" />
+        <Table
+          className="mt-4"
+          columns={[
+            { label: "Klien", accessor: "client_name", sortable: true },
+            { label: "Jenis Report", accessor: "product_type", sortable: true },
+            { label: "Author", accessor: "author", sortable: true },
+            { label: "End Project", accessor: "end_date", sortable: true },
+            { label: "Status", accessor: "status", sortable: true },
+          ]}
+          tableData={reports}
+        />
       </div>
     </div>
   );
