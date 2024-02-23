@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { FaPlusCircle } from "react-icons/fa";
+import { RiPencilFill } from "react-icons/ri";
+import { RiFileDownloadFill } from "react-icons/ri";
 import Link from "next/link";
 
 import Button from "@/app/ui/auth/button";
@@ -50,7 +52,16 @@ export default function Report() {
       <div className="mt-4 bg-white rounded-xl w-full h-screen p-4">
         <h1 className="text-lg font-semibold">Report List</h1>
         <SearchBar className={`w-[250px] mt-4`} />
-        <Table className={`mt-4`} />
+        <Table className={`mt-4`}>
+          <div className="flex gap-2">
+            <div className="w-8 rounded-md aspect-square bg-blue-600 flex items-center justify-center cursor-pointer">
+              <RiPencilFill size={18} color="white" />
+            </div>
+            <div className="w-8 rounded-md aspect-square bg-green-600 flex items-center justify-center cursor-pointer">
+              <RiFileDownloadFill size={18} color="white" />
+            </div>
+          </div>
+        </Table>
       </div>
     </>
   );

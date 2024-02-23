@@ -62,6 +62,7 @@ const Table = ({ className = "", actionable = true, children }) => {
         columns={columns}
         tableData={tableData}
         withAction={actionable}
+        action={children}
       />
     </table>
   );

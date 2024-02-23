@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { FaPlusCircle } from "react-icons/fa";
+import { RiPencilFill } from "react-icons/ri";
 import Table from "@/app/ui/dashboard/table/table";
 import Button from "@/app/ui/auth/button";
-import PieChart from "../../dashboard/_piechart";
+import PieChart from "@/app/(with-bar)/dashboard/_piechart";
 
 export default function ProjectDetail() {
   return (
@@ -50,7 +51,13 @@ export default function ProjectDetail() {
                 <h1 className="text-lg font-medium">Tambah Temuan</h1>
               </Button>
             </Link>
-            <Table />
+            <Table className={`mt-4`}>
+              <div className="flex gap-2">
+                <div className="w-8 rounded-md aspect-square bg-blue-600 flex items-center justify-center cursor-pointer">
+                  <RiPencilFill size={18} color="white" />
+                </div>
+              </div>
+            </Table>
           </div>
           <div className="w-full flex justify-end">
             <Button

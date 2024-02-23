@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const TableBody = ({ tableData, columns, withAction }) => {
+const TableBody = ({ tableData, columns, withAction, action = null }) => {
   return (
     <tbody>
       {tableData.map((data, index) => {
@@ -23,7 +23,7 @@ const TableBody = ({ tableData, columns, withAction }) => {
               );
             })}
 
-            {withAction && <th className="py-4 pl-4"></th>}
+            {withAction && <th className="py-4 pl-4">{action}</th>}
           </tr>
         );
       })}
