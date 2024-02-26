@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import InputBar from "@/app/ui/dashboard/inputBar";
-import QuillBar from "@/app/ui/dashboard/quillBar";
+import InputBar from "@/app/ui/inputBar";
+import QuillBar from "@/app/ui/quillBar";
 import Button from "@/app/ui/auth/button";
 
 export default function AddTemuan() {

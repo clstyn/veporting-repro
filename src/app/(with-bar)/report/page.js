@@ -7,7 +7,7 @@ import { RiFileDownloadFill } from "react-icons/ri";
 import Link from "next/link";
 
 import Button from "@/app/ui/auth/button";
-import SearchBar from "@/app/ui/dashboard/searchBar";
+import SearchBar from "@/app/ui/searchBar";
 import Table from "@/app/ui/dashboard/table/table";
 import { useReportsData } from "@/app/dataServices";
 

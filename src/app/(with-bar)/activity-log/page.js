@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/app/ui/auth/button";
-import SearchBar from "@/app/ui/dashboard/searchBar";
+import SearchBar from "@/app/ui/searchBar";
 import Table from "@/app/ui/dashboard/table/table";
 
 export default function ActivityLog() {
