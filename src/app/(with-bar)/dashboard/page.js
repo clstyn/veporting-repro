@@ -9,6 +9,7 @@ import LineChart from "@/app/(with-bar)/dashboard/_linechart";
 import PieChart from "@/app/(with-bar)/dashboard/_piechart";
 import Table from "@/app/ui/dashboard/table/table";
 import { useReportsData } from "@/app/dataServices";
+import { useEffect, useState } from "react";
 
 const cardList = [
   {
@@ -36,6 +37,24 @@ const cardList = [
 
 export default function Home() {
   const { reports, isLoading, isError } = useReportsData();
+  const [reportsData, setReportsData] = useState([]);
+
+  useEffect(() => {
+    if (reports) {
+      const formattedReports = reports.map((report) => ({
+        id: report.id,
+        client_name: report.client_name,
+        product_type:
+          report.product_type === 0
+            ? "Penetration Testing"
+            : "Vulnerability Assessment",
+        author: report.author,
+        end_date: report.end_date,
+        status: report.end_date > new Date() ? "Ongoing" : "Done",
+      }));
+      setReportsData(formattedReports);
+    }
+  }, [reports]);
 
   return (
     <div className="rounded-xl grid grid-cols-3 gap-4">
@@ -92,7 +111,7 @@ export default function Home() {
             { label: "End Project", accessor: "end_date", sortable: true },
             { label: "Status", accessor: "status", sortable: true },
           ]}
-          tableData={reports}
+          tableData={reportsData}
         />
       </div>
     </div>

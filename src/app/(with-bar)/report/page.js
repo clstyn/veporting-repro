@@ -13,9 +13,23 @@ import { useReportsData } from "@/app/dataServices";
 
 export default function Report() {
   const { reports, isLoading, isError } = useReportsData();
+  const [reportsData, setReportsData] = useState([]);
 
   useEffect(() => {
-    console.log(reports);
+    if (reports) {
+      const formattedReports = reports.map((report) => ({
+        id: report.id,
+        client_name: report.client_name,
+        product_type:
+          report.product_type === 0
+            ? "Penetration Testing"
+            : "Vulnerability Assessment",
+        author: report.author,
+        end_date: report.end_date,
+        status: report.end_date > new Date() ? "Ongoing" : "Done",
+      }));
+      setReportsData(formattedReports);
+    }
   }, [reports]);
 
   return (
@@ -43,7 +57,7 @@ export default function Report() {
             { label: "End Project", accessor: "end_date", sortable: true },
             { label: "Status", accessor: "status", sortable: true },
           ]}
-          tableData={reports}
+          tableData={reportsData}
         >
           <div className="flex gap-2">
             <div className="w-8 rounded-md aspect-square bg-blue-600 flex items-center justify-center cursor-pointer">

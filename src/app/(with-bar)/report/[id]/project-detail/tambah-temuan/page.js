@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import InputBar from "@/app/ui/dashboard/inputBar";
 import QuillBar from "@/app/ui/dashboard/quillBar";
 import Button from "@/app/ui/auth/button";
-import { usePasteUpload } from "@rpldy/upload-paste";
-import Uploady from "@rpldy/uploady";
 
 export default function AddTemuan() {
   const [selectedImages, setSelectedImages] = useState([]);
@@ -73,17 +71,15 @@ export default function AddTemuan() {
 
           <QuillBar label="Deskripsi" />
 
-          <Uploady>
-            <InputBar
-              labelText="Upload POC"
-              inputType="images"
-              selectedImages={selectedImages}
-              imagesChange={handleAddImages}
-              handleDrop={handleDrop}
-              handleDragOver={handleDragOver}
-              handlePasteImage={handlePaste}
-            />
-          </Uploady>
+          <InputBar
+            labelText="Upload POC"
+            inputType="images"
+            selectedImages={selectedImages}
+            imagesChange={handleAddImages}
+            handleDrop={handleDrop}
+            handleDragOver={handleDragOver}
+            handlePasteImage={handlePaste}
+          />
 
           <QuillBar label="Rekomendasi" />
 

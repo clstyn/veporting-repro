@@ -1,34 +1,74 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { FaPlusCircle } from "react-icons/fa";
 import { RiPencilFill } from "react-icons/ri";
 import Table from "@/app/ui/dashboard/table/table";
 import Button from "@/app/ui/auth/button";
 import PieChart from "@/app/(with-bar)/dashboard/_piechart";
+import { useReportsDataById } from "@/app/dataServices";
+import { formatDate } from "@/app/utils";
 
-export default function ProjectDetail() {
+export default function ProjectDetail({ params }) {
+  const { report, isLoading, isError } = useReportsDataById(params.id);
+
+  const [reportData, setReportData] = useState();
+
+  useEffect(() => {
+    if (report) {
+      const formattedReport = {
+        id: report.id,
+        client_name: report.client_name,
+        product_type:
+          report.product_type === 0
+            ? "Penetration Testing"
+            : "Vulnerability Assessment",
+        report_date: report.report_date,
+        test_method: report.test_method,
+        framework: report.framework,
+        target_type: report.target_type,
+        target_address: report.target_address,
+        credential_username: report.credential_username,
+        credential_password: report.credential_password,
+      };
+      setReportData(formattedReport);
+    }
+  }, [report]);
+
   return (
     <>
       <div className="mt-4 bg-white rounded-xl w-full p-4 grid grid-cols-3 gap-4">
         <div className="">
           <h1 className="text-xl font-medium">Informasi Report</h1>
           <div className="p-4 border border-[#BFBFBF] flex flex-col gap-4 rounded-xl mt-4">
-            <DetailText title="Nama Klien" value="PT. Bangak Manufaktur" />
+            <DetailText title="Nama Klien" value={reportData?.client_name} />
             <DetailText
               title="Jenis Product"
-              value="Vulnerability Assessment"
+              value={reportData?.product_type}
             />
-            <DetailText title="Tanggal Report" value="04 Oktober 2023" />
-            <DetailText title="Metode Pengujian" value="Greybox" />
-            <DetailText title="Framework" value="CWE" />
-            <DetailText title="Jenis Target" value="Web Application" />
+            <DetailText
+              title="Tanggal Report"
+              value={formatDate(reportData?.report_date)}
+            />
+            <DetailText
+              title="Metode Pengujian"
+              value={reportData?.test_method}
+            />
+            <DetailText title="Framework" value={reportData?.framework} />
+            <DetailText title="Jenis Target" value={reportData?.target_type} />
             <DetailText
               title="Alamat Target"
               value="https://wyasaaplikasi.com/"
             />
-            <DetailText title="Credential Username" value="bmi" />
-            <DetailText title="Credential Password" value="bmi#0" />
+            <DetailText
+              title="Credential Username"
+              value={reportData?.credential_username}
+            />
+            <DetailText
+              title="Credential Password"
+              value={reportData?.credential_password}
+            />
 
             <div className="text-sm">
               <h1 className="text-[#6F6F6F]">Findings</h1>

@@ -13,7 +13,9 @@ const TableBody = ({ tableData, columns, withAction, action = null }) => {
                 <>
                   {accessor === "client_name" ? (
                     <td key={index} className="py-4 pl-4 cursor-pointer">
-                      <Link href={`/report/project-detail`}>{tData}</Link>
+                      <Link href={`/report/${data.id}/project-detail`}>
+                        {tData}
+                      </Link>
                     </td>
                   ) : accessor === "end_date" ? (
                     <td key={index} className="py-4 pl-4">

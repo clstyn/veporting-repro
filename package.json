@@ -10,8 +10,6 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",
-    "@rpldy/upload-paste": "^1.8.0",
-    "@rpldy/uploady": "^1.8.0",
     "chart.js": "^4.4.1",
     "clsx": "^2.1.0",
     "next": "14.1.0",
