@@ -85,7 +85,7 @@ export default function Page() {
 
       {error && <div className="text-red-900 font-bold">{error}</div>}
 
-      <Link href={`/auth/verify`}>
+      <Link href={`/auth/send-reset`}>
         <p className="w-full text-end text-red-700 my-4 hover:underline">
           Reset Password
         </p>
