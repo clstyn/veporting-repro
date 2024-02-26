@@ -3,12 +3,31 @@
 import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
 import Button from "@/app/ui/auth/button";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useRef, useEffect } from "react";
+import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 
 export default function Verify() {
   const [isOpen, setIsOpen] = useState(false);
+  const clickRef = useRef(null);
+  const [time, setTime] = useState({
+    minutes: parseInt(1),
+    seconds: parseInt(0)
+  });
+  const [isExpired, setIsExpired] = useState(false);
+  const [isTrue, setIsTrue] = useState(false);
+
   const onSubmit = async (event) => {
     event.preventDefault();
+    if(isExpired) {
+      alert("Kode sudah kadaluarsa");
+      return;
+    }
+    if(event.target.verificationCode.value === "123456") {
+      setIsTrue(true);
+    }else {
+      setIsTrue(false);
+    }
     await openModal();
   };
 
@@ -20,42 +39,85 @@ export default function Verify() {
     setIsOpen(true);
   };
 
+  const handleWrongCode = () => {
+    document.getElementById("verificationCode").value = "";
+    closeModal();
+  }
+
+  useEffect(() => {
+    const handleCloseOnOutsideClick = (event) => {
+      if (clickRef.current && !clickRef.current.contains(event.target)) {
+        closeModal();
+      }
+    };
+
+    document.addEventListener("mousedown", handleCloseOnOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleCloseOnOutsideClick);
+    };
+  }, [clickRef]);
+
+  
+
+  useEffect(() => {
+    let timer = setInterval(() => {
+      if (time.seconds > 0) {
+        setTime(prevState => ({
+          ...prevState,
+          seconds: prevState.seconds - 1
+        }));
+      }
+      if (time.seconds === 0) {
+        if (time.minutes === 0) {
+          clearInterval(timer);
+          setIsExpired(true);
+        } else {
+          setTime(prevState => ({
+            minutes: prevState.minutes - 1,
+            seconds: 59
+          }));
+        }
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [time]);
+  
+
   return (
     <>
       <div className="p-6">
         <div className="flex flex-col items-center">
           <Image
-            src={`/email.svg`}
-            alt="email"
+            src={`/password.svg`}
+            alt="passwordIcon"
             width={120}
             height={120}
             className="mx-auto"
           />
           <h2 className={`font-bold text-zinc-600 text-2xl text-center mt-4`}>
-            Masukkan Email
+            Masukkan Kode
           </h2>
-          <p className="px-4 text-center max-w-[70%] text-wrap">
-            Kode verifikasi akan dikirimkan ke alamat email anda
+          <p className="px-4 text-center max-w-[80%] text-wrap">
+            Kode verifikasi telah dikirimkan ke alamat email anda
           </p>
         </div>
         <form onSubmit={onSubmit}>
           <div className="mt-4">
             <div className="flex flex-col">
-              <label
-                htmlFor="email"
-                className="font-medium font-[#535353] mb-2"
-              >
-                Email
-              </label>
               <input
                 type="text"
-                name="email"
-                className="bg-[#F6F6F6] border border-[#BFBFBF] rounded-md h-12 focus:outline-none px-2"
+                id="verificationCode"
+                name="verificationCode"
+                maxLength={6}
+                className="bg-[#F6F6F6] border border-[#BFBFBF] rounded-md h-12 focus:outline-none px-2 text-center text-xl tracking-[1em] font-bold"
               />
             </div>
           </div>
-          <Button type="submit" className={`mt-4`}>
-            Kirim Kode
+
+          <p className="my-2">- Kode akan berakhir dalam <span className="font-bold">{time.minutes}:{time.seconds < 10 ? `0${time.seconds}` : time.seconds}</span></p>
+          <Button className={`mt-4`}>
+            Verifikasi Kode
           </Button>
         </form>
       </div>
@@ -88,8 +150,8 @@ export default function Verify() {
                 <Dialog.Panel className="w-full max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title as={Fragment}>
                     <Image
-                      src={`/success.svg`}
-                      alt="success"
+                      src={isTrue ? `/success.svg` : `/failed.svg`}
+                      alt={isTrue ? "success" : "failed"}
                       width={120}
                       height={120}
                       className="mx-auto"
@@ -97,22 +159,17 @@ export default function Verify() {
                   </Dialog.Title>
                   <div className="mt-4 flex flex-col items-center">
                     <h2 className="text-2xl font-bold text-zinc-600">
-                      Kode Telah Terkirim
+                      {isTrue ? "Benar" : "Salah"}
                     </h2>
                     <p className="text-sm text-gray-500 max-w-[60%] text-center">
-                      Cek email anda dan ketikan kode yang tertera
+                      {isTrue ? "Kode verifikasi yang anda masukkan benar" : "Kode verifikasi yang anda masukkan salah"}
                     </p>
                   </div>
-
-                  <div className="mt-4 flex justify-center">
-                    <button
-                      type="button"
-                      className="inline-flex justify-center text-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
-                    >
-                      Got it, thanks!
-                    </button>
-                  </div>
+                  <Button className="mt-4"
+                    onClick={isTrue ? redirect("/auth/reset-password") : handleWrongCode}
+                  >
+                      {isTrue ? "Buat Password Baru" : "Ketik Ulang"}
+                  </Button>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
