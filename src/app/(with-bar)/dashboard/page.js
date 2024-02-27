@@ -45,7 +45,7 @@ export default function Home() {
         id: report.id,
         client_name: report.client_name,
         product_type:
-          report.product_type === 0
+          report.product_type == 0
             ? "Penetration Testing"
             : "Vulnerability Assessment",
         author: report.author,

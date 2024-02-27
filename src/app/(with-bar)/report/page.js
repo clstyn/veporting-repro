@@ -21,7 +21,7 @@ export default function Report() {
         id: report.id,
         client_name: report.client_name,
         product_type:
-          report.product_type === 0
+          report.product_type == 0
             ? "Penetration Testing"
             : "Vulnerability Assessment",
         author: report.author,
@@ -34,16 +34,15 @@ export default function Report() {
 
   return (
     <>
-      <Link href={`/report/tambah-report`}>
-        {" "}
-        <Button
-          type={"button"}
-          className="!w-[250px] px-2 py-3 rounded-xl flex items-center justify-center gap-2"
+      <Button type={"button"} className="!w-[250px] px-2 py-3 rounded-xl">
+        <Link
+          href={`/report/tambah-report`}
+          className=" flex items-center justify-center gap-2"
         >
           <FaPlusCircle size={18} />
           <h1 className="text-lg font">Tambahkan Report</h1>
-        </Button>
-      </Link>
+        </Link>
+      </Button>
 
       <div className="mt-4 bg-white rounded-xl w-full h-screen p-4">
         <h1 className="text-lg font-semibold">Report List</h1>

@@ -4,41 +4,34 @@ import "react-quill/dist/quill.snow.css";
 
 const QuillEditor = dynamic(() => import("react-quill"), { ssr: false });
 
-export default function QuillBar({ label = "" }) {
-  const [content, setContent] = useState("");
-
+export default function QuillBar({
+  label = "",
+  content = "",
+  handleEditorChange = () => {},
+  handleSave = () => {},
+}) {
   const quillModules = {
     toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
+      ["bold", "italic", "underline", "strike"],
       [{ list: "ordered" }, { list: "bullet" }],
-      ["link", "image"],
+      ["link"],
       [{ align: [] }],
       [{ color: [] }],
-      ["code-block"],
       ["clean"],
     ],
   };
 
   const quillFormats = [
-    "header",
     "bold",
     "italic",
     "underline",
     "strike",
-    "blockquote",
     "list",
     "bullet",
     "link",
-    "image",
     "align",
     "color",
-    "code-block",
   ];
-
-  const handleEditorChange = (newContent) => {
-    setContent(newContent);
-  };
 
   return (
     <main>
@@ -48,6 +41,7 @@ export default function QuillBar({ label = "" }) {
           <QuillEditor
             value={content}
             onChange={handleEditorChange}
+            onBlur={handleSave}
             modules={quillModules}
             formats={quillFormats}
             className="w-full mt-1 bg-[#F6F6F6]"

@@ -5,10 +5,12 @@ export default function InputBar({
   labelText = "",
   className = "",
   inputType = "text",
+  inputName = "",
+  inputValue = "",
   options = [],
-  handleChange = () => {},
   minDate = null,
   selectedImages = [],
+  handleChange = () => {},
   imagesChange = () => {},
   removeSelectedImage = () => {},
   handleDrop = () => {},
@@ -22,8 +24,11 @@ export default function InputBar({
       </label>
       {inputType === "dropdown" ? (
         <select
-          name={labelText}
+          id={labelText}
+          name={inputName}
+          value={inputValue}
           className={`w-full rounded bg-[#F6F6F6] border border-[#BFBFBF] focus:outline-none p-2 my-2 ${className}`}
+          onChange={handleChange}
         >
           {options.map((option, index) => (
             <option key={index} value={option.value}>
@@ -40,10 +45,11 @@ export default function InputBar({
         />
       ) : inputType === "dateEnd" ? (
         <input
-          name={labelText}
+          name={inputName}
           type="date"
           className={`w-full rounded bg-[#F6F6F6] border border-[#BFBFBF] focus:outline-none p-2 my-2 ${className}`}
           min={minDate}
+          onChange={handleChange}
         />
       ) : inputType === "radioChoice" ? (
         <fieldset>
@@ -100,8 +106,10 @@ export default function InputBar({
         </div>
       ) : (
         <input
-          name={labelText}
+          name={inputName}
           type="text"
+          value={inputValue}
+          onChange={handleChange}
           className={`w-full rounded bg-[#F6F6F6] border border-[#BFBFBF] focus:outline-none p-2 my-2 ${className}`}
         />
       )}

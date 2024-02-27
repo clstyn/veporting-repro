@@ -21,7 +21,7 @@ export default function ProjectDetail({ params }) {
         id: report.id,
         client_name: report.client_name,
         product_type:
-          report.product_type === 0
+          report.product_type == 0
             ? "Penetration Testing"
             : "Vulnerability Assessment",
         report_date: report.report_date,
