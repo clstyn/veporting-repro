@@ -1,34 +1,32 @@
 "use client";
 
-import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
-import Button from "@/app/ui/auth/button";
 import { Fragment, useState, useRef, useEffect } from "react";
-import { redirect } from "next/navigation";
-// import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import Modal from "../modal";
 
 export default function Verify() {
-  const [isOpen, setIsOpen] = useState(false);
   const clickRef = useRef(null);
   const [time, setTime] = useState({
     minutes: parseInt(1),
-    seconds: parseInt(0)
+    seconds: parseInt(0),
   });
   const [isExpired, setIsExpired] = useState(false);
   const [isTrue, setIsTrue] = useState(false);
+  const [verificationCode, setVerificationCode] = useState("");
 
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    if(isExpired) {
+  const router = useRouter();
+
+  const onSubmit = async (event) => { 
+    if (isExpired) {
       alert("Kode sudah kadaluarsa");
       return;
     }
-    if(event.target.verificationCode.value === "123456") {
+    if (verificationCode === "123456") {
       setIsTrue(true);
-    }else {
+    } else {
       setIsTrue(false);
     }
-    await openModal();
   };
 
   const closeModal = () => {
@@ -39,10 +37,13 @@ export default function Verify() {
     setIsOpen(true);
   };
 
+  const handleCorrectCode = () => {
+    router.push("/auth/reset-password");
+  };
+
   const handleWrongCode = () => {
-    document.getElementById("verificationCode").value = "";
-    closeModal();
-  }
+    setVerificationCode("");
+  };
 
   useEffect(() => {
     const handleCloseOnOutsideClick = (event) => {
@@ -57,14 +58,12 @@ export default function Verify() {
     };
   }, [clickRef]);
 
-  
-
   useEffect(() => {
     let timer = setInterval(() => {
       if (time.seconds > 0) {
-        setTime(prevState => ({
+        setTime((prevState) => ({
           ...prevState,
-          seconds: prevState.seconds - 1
+          seconds: prevState.seconds - 1,
         }));
       }
       if (time.seconds === 0) {
@@ -72,9 +71,9 @@ export default function Verify() {
           clearInterval(timer);
           setIsExpired(true);
         } else {
-          setTime(prevState => ({
+          setTime((prevState) => ({
             minutes: prevState.minutes - 1,
-            seconds: 59
+            seconds: 59,
           }));
         }
       }
@@ -82,7 +81,6 @@ export default function Verify() {
 
     return () => clearInterval(timer);
   }, [time]);
-  
 
   return (
     <>
@@ -102,27 +100,69 @@ export default function Verify() {
             Kode verifikasi telah dikirimkan ke alamat email anda
           </p>
         </div>
-        <form onSubmit={onSubmit}>
+        <div>
           <div className="mt-4">
             <div className="flex flex-col">
               <input
                 type="text"
                 id="verificationCode"
                 name="verificationCode"
+                onChange={(e) => setVerificationCode(e.target.value)}
+                value={verificationCode}
                 maxLength={6}
                 className="bg-[#F6F6F6] border border-[#BFBFBF] rounded-md h-12 focus:outline-none px-2 text-center text-xl tracking-[1em] font-bold"
               />
             </div>
           </div>
 
-          <p className="my-2">- Kode akan berakhir dalam <span className="font-bold">{time.minutes}:{time.seconds < 10 ? `0${time.seconds}` : time.seconds}</span></p>
-          <Button className={`mt-4`}>
-            Verifikasi Kode
-          </Button>
-        </form>
+          <p className="my-2">
+            - Kode akan berakhir dalam{" "}
+            <span className="font-bold">
+              {time.minutes}:
+              {time.seconds < 10 ? `0${time.seconds}` : time.seconds}
+            </span>
+          </p>
+          <p className="my-2">
+            - Tidak menerima kode?{" "}
+            <Modal
+              buttonClass="font-bold text-red-500 hover:underline"
+              buttonType="custom"
+              buttonText={"Kirim ulang"}
+              type={"success"}
+            >
+              <div className="mt-4 flex flex-col items-center">
+                <h2 className="text-2xl font-bold text-zinc-600">
+                  Kode dikirim ulang
+                </h2>
+                <p className="text-sm text-gray-500 max-w-[60%] text-center">
+                  Kode verifikasi telah dikirimkan ulang ke alamat email anda
+                </p>
+              </div>
+            </Modal>
+          </p>
+          <Modal
+            buttonClass={`mt-4`}
+            buttonText={`Verifikasi Kode`}
+            type={isTrue ? "success" : "failed"}
+            exitButton={isTrue ? "Buat Password Baru" : "Ketik Ulang"}
+            handleExit={isTrue ? handleCorrectCode : handleWrongCode}
+            handleBeforeLoad={onSubmit}
+          >
+            <div className="mt-4 flex flex-col items-center">
+              <h2 className="text-2xl font-bold text-zinc-600">
+                {isTrue ? "Benar" : "Salah"}
+              </h2>
+              <p className="text-sm text-gray-500 max-w-[60%] text-center">
+                {isTrue
+                  ? "Kode verifikasi yang anda masukkan benar"
+                  : "Kode verifikasi yang anda masukkan salah"}
+              </p>
+            </div>
+          </Modal>
+        </div>
       </div>
 
-      <Transition appear show={isOpen} as={Fragment}>
+      {/* <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
@@ -157,17 +197,13 @@ export default function Verify() {
                       className="mx-auto"
                     />
                   </Dialog.Title>
-                  <div className="mt-4 flex flex-col items-center">
-                    <h2 className="text-2xl font-bold text-zinc-600">
-                      {isTrue ? "Benar" : "Salah"}
-                    </h2>
-                    <p className="text-sm text-gray-500 max-w-[60%] text-center">
-                      {isTrue ? "Kode verifikasi yang anda masukkan benar" : "Kode verifikasi yang anda masukkan salah"}
-                    </p>
-                  </div>
+                  
                   <Button className="mt-4"
-                    onClick={isTrue ? redirect("/auth/reset-password") : handleWrongCode}
-                  >
+                    onClick={isTrue ? () => {
+                      closeModal();
+                      router.push("/auth/reset-password");
+                    } : handleWrongCode}
+                  >   
                       {isTrue ? "Buat Password Baru" : "Ketik Ulang"}
                   </Button>
                 </Dialog.Panel>
@@ -175,7 +211,7 @@ export default function Verify() {
             </div>
           </div>
         </Dialog>
-      </Transition>
+      </Transition> */}
     </>
   );
 }
