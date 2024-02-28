@@ -12,14 +12,18 @@ const Table = ({
     { label: "Status", accessor: "status", sortable: true },
   ],
   className = "",
-  action = null,
+  actionDelete = () => {},
 }) => {
   return (
     <table
       className={`w-full [&>tbody>*:nth-child(odd)]:bg-white [&>tbody>*:nth-child(even)]:bg-neutral-100 rounded-t-md border-2 border-neutral-100 ${className}`}
     >
       <TableHead columns={columns} />
-      <TableBody columns={columns} tableData={tableData} action={action} />
+      <TableBody
+        columns={columns}
+        tableData={tableData}
+        actionDelete={actionDelete}
+      />
     </table>
   );
 };

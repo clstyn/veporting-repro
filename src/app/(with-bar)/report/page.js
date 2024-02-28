@@ -7,11 +7,14 @@ import Link from "next/link";
 import Button from "@/app/ui/auth/button";
 import SearchBar from "@/app/ui/searchBar";
 import Table from "@/app/ui/dashboard/table/table";
+import DeletePopup from "@/app/(with-bar)/report/_deletePopup";
 import { useReportsData } from "@/app/dataServices";
 
 export default function Report() {
   const { reports, isLoading, isError } = useReportsData();
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [reportsData, setReportsData] = useState([]);
+  const [selectedId, setSelectedId] = useState();
 
   useEffect(() => {
     if (reports) {
@@ -32,6 +35,11 @@ export default function Report() {
 
   return (
     <>
+      <DeletePopup
+        idData={selectedId}
+        isDeleteOpen={isDeleteOpen}
+        onClose={() => setIsDeleteOpen(false)}
+      />
       <Button type={"button"} className="!w-[250px] px-2 py-3 rounded-xl">
         <Link
           href={`/report/tambah-report`}
@@ -56,6 +64,10 @@ export default function Report() {
             { label: "Aksi", accessor: "action" },
           ]}
           tableData={reportsData}
+          actionDelete={(id) => {
+            setSelectedId(id);
+            setIsDeleteOpen(true);
+          }}
         />
       </div>
     </>

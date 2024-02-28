@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import InputBar from "@/app/ui/inputBar";
 import QuillBar from "@/app/ui/quillBar";
 import Button from "@/app/ui/auth/button";
 
 export default function AddReport() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [reportDate, setReportDate] = useState();
   const [quillContent, setQuillContent] = useState("Test content");
@@ -51,7 +53,7 @@ export default function AddReport() {
     console.log(formData);
     try {
       setIsLoading(true);
-      const response = await fetch("http://38.47.180.110:3000/report/create", {
+      const response = await fetch("/api/report/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,6 +66,7 @@ export default function AddReport() {
       }
       const data = await response.json();
       console.log("Success", data);
+      router.push("/report");
     } catch (error) {
       console.error(error);
     } finally {

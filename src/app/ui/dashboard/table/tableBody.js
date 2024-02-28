@@ -4,7 +4,7 @@ import { RiPencilFill } from "react-icons/ri";
 import { RiFileDownloadFill } from "react-icons/ri";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 
-const TableBody = ({ tableData, columns }) => {
+const TableBody = ({ tableData, columns, actionDelete }) => {
   return (
     <tbody>
       {tableData.map((data, index) => {
@@ -26,7 +26,10 @@ const TableBody = ({ tableData, columns }) => {
                         <div className="w-8 rounded-md aspect-square bg-green-600 flex items-center justify-center cursor-pointer">
                           <RiFileDownloadFill size={18} color="white" />
                         </div>
-                        <div className="w-8 rounded-md aspect-square bg-red-600 flex items-center justify-center cursor-pointer">
+                        <div
+                          onClick={() => actionDelete(data.id)}
+                          className="w-8 rounded-md aspect-square bg-red-600 flex items-center justify-center cursor-pointer"
+                        >
                           <RiDeleteBin2Fill size={18} color="white" />
                         </div>
                       </div>

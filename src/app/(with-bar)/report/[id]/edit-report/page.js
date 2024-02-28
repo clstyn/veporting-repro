@@ -50,16 +50,13 @@ export default function EditReport({ params }) {
     console.log(formData);
 
     try {
-      const response = await fetch(
-        `http://38.47.180.110:3000/report/${params.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`/api/report/${params.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (!response.ok) {
         throw new Error("Error updating report");
@@ -170,6 +167,9 @@ export default function EditReport({ params }) {
           <div className="flex gap-4 justify-end">
             <Button
               type={"button"}
+              onClick={() => {
+                router.push("/report");
+              }}
               className="mt-4 !w-[150px] p-4 !bg-[#FFEEF0] !text-red-700"
             >
               Batal

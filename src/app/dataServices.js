@@ -14,13 +14,9 @@ const fetcher = async (url) => {
 };
 
 export const useReportsData = () => {
-  const { data, error } = useSWR(
-    "http://38.47.180.110:3000/report/all",
-    fetcher,
-    {
-      revalidateOnMount: true,
-    }
-  );
+  const { data, error } = useSWR("/api/report/all", fetcher, {
+    revalidateOnMount: true,
+  });
 
   return {
     reports: data,
@@ -30,10 +26,7 @@ export const useReportsData = () => {
 };
 
 export const useReportsDataById = (id) => {
-  const { data, error } = useSWR(
-    `http://38.47.180.110:3000/report/${id}`,
-    fetcher
-  );
+  const { data, error } = useSWR(`/api/report/${id}`, fetcher);
 
   return {
     report: data,
