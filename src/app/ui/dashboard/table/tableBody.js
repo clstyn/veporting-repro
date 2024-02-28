@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { formatDate } from "@/app/utils";
+import { RiPencilFill } from "react-icons/ri";
+import { RiFileDownloadFill } from "react-icons/ri";
+import { RiDeleteBin2Fill } from "react-icons/ri";
 
-const TableBody = ({ tableData, columns, withAction, action = null }) => {
+const TableBody = ({ tableData, columns }) => {
   return (
     <tbody>
       {tableData.map((data, index) => {
@@ -11,7 +14,24 @@ const TableBody = ({ tableData, columns, withAction, action = null }) => {
               const tData = data[accessor] ? data[accessor] : "——";
               return (
                 <>
-                  {accessor === "client_name" ? (
+                  {accessor === "action" ? (
+                    <td className="py-4 pl-4">
+                      <div className="flex gap-2">
+                        <Link
+                          href={`/report/${data.id}/edit-report`}
+                          className="w-8 rounded-md aspect-square bg-blue-600 flex items-center justify-center cursor-pointer"
+                        >
+                          <RiPencilFill size={18} color="white" />
+                        </Link>
+                        <div className="w-8 rounded-md aspect-square bg-green-600 flex items-center justify-center cursor-pointer">
+                          <RiFileDownloadFill size={18} color="white" />
+                        </div>
+                        <div className="w-8 rounded-md aspect-square bg-red-600 flex items-center justify-center cursor-pointer">
+                          <RiDeleteBin2Fill size={18} color="white" />
+                        </div>
+                      </div>
+                    </td>
+                  ) : accessor === "client_name" ? (
                     <td key={index} className="py-4 pl-4 cursor-pointer">
                       <Link href={`/report/${data.id}/project-detail`}>
                         {tData}
@@ -29,8 +49,6 @@ const TableBody = ({ tableData, columns, withAction, action = null }) => {
                 </>
               );
             })}
-
-            {withAction && <th className="py-4 pl-4">{action}</th>}
           </tr>
         );
       })}

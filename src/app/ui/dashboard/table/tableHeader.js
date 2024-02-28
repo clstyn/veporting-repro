@@ -37,8 +37,6 @@ const TableHead = ({ columns, handleSorting = null, withAction }) => {
             </th>
           );
         })}
-
-        {withAction && <th className="py-4 pl-4">Aksi</th>}
       </tr>
     </thead>
   );

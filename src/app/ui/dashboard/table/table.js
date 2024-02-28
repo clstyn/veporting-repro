@@ -12,20 +12,14 @@ const Table = ({
     { label: "Status", accessor: "status", sortable: true },
   ],
   className = "",
-  actionable = true,
-  children,
+  action = null,
 }) => {
   return (
     <table
       className={`w-full [&>tbody>*:nth-child(odd)]:bg-white [&>tbody>*:nth-child(even)]:bg-neutral-100 rounded-t-md border-2 border-neutral-100 ${className}`}
     >
-      <TableHead columns={columns} withAction={actionable} />
-      <TableBody
-        columns={columns}
-        tableData={tableData}
-        withAction={actionable}
-        action={children}
-      />
+      <TableHead columns={columns} />
+      <TableBody columns={columns} tableData={tableData} action={action} />
     </table>
   );
 };
