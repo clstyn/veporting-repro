@@ -3,6 +3,7 @@ export default function Button({
   children,
   className = "",
   onClick = null,
+  style,
 }) {
   const additionalClasses = className
     ? className.toString().replace(",", " ")
@@ -11,7 +12,7 @@ export default function Button({
   return (
     <button
       onClick={onClick}
-      className={`bg-red-700 text-white p-2 rounded-md w-full ${additionalClasses}`}
+      className={style === 'custom' ? '' : `bg-red-700 text-white p-2 rounded-md w-full ${additionalClasses}`}
       type={type}
     >
       {children}
