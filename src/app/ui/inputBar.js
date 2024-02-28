@@ -41,6 +41,7 @@ export default function InputBar({
           name={labelText}
           type="date"
           className={`w-full rounded bg-[#F6F6F6] border border-[#BFBFBF] focus:outline-none p-2 my-2 ${className}`}
+          value={inputValue.substring(0, 10)}
           onChange={handleChange}
         />
       ) : inputType === "dateEnd" ? (
@@ -49,6 +50,7 @@ export default function InputBar({
           type="date"
           className={`w-full rounded bg-[#F6F6F6] border border-[#BFBFBF] focus:outline-none p-2 my-2 ${className}`}
           min={minDate}
+          value={inputValue.substring(0, 10)}
           onChange={handleChange}
         />
       ) : inputType === "radioChoice" ? (
