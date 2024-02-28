@@ -27,7 +27,7 @@ export default function Report() {
             : "Vulnerability Assessment",
         author: report.author,
         end_date: report.end_date,
-        status: report.end_date > new Date() ? "Ongoing" : "Done",
+        status: new Date(report.end_date) > new Date() ? "Ongoing" : "Done",
       }));
       setReportsData(formattedReports);
     }
