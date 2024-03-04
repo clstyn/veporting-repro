@@ -1,23 +1,27 @@
 // belum jadi
 'use client';
 
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, forwardRef, useRef, useImperativeHandle, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
 import Button from "@/app/ui/auth/button";
 
-export default function Modal(
+export const Modal = forwardRef(function Modal(
   {
-  buttonClass = "",
-  buttonText = "",
-  buttonType = "",
   type = "",
   children,
   exitButton = "",
   handleExit = () => {},
   handleBeforeLoad = () => {},
-  }
+  },
+  ref
 ) {
+
+  useImperativeHandle(ref, () => ({
+    openModal: () => {
+      openModal();
+    },
+  }));
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -41,9 +45,9 @@ export default function Modal(
     }
     setIsOpen(true)
   }
+  
   return (
     <>
-    <Button onClick={openModal} className={buttonClass} style={buttonType}>{buttonText}</Button>
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
         <Transition.Child
@@ -98,4 +102,4 @@ export default function Modal(
 
    
   );
-}
+});
