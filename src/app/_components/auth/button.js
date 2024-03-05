@@ -4,6 +4,7 @@ export default function Button({
   className = "",
   onClick = null,
   mode,
+  disabled = false,
 }) {
   const additionalClasses = className
     ? className.toString().replace(",", " ")
@@ -14,6 +15,7 @@ export default function Button({
       onClick={onClick}
       className={mode === 'custom' ? `${additionalClasses}` : `bg-red-700 text-white p-2 rounded-md w-full ${additionalClasses}`}
       type={type}
+      disabled={disabled}
     >
       {children}
     </button>

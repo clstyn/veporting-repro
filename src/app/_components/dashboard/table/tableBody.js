@@ -15,7 +15,7 @@ const TableBody = ({ tableData, columns, actionDelete }) => {
               return (
                 <>
                   {accessor === "action" ? (
-                    <td className="py-4 pl-4">
+                    <td key={index} className="py-4 pl-4">
                       <div className="flex gap-2">
                         <Link
                           href={`/report/${data.id}/edit-report`}

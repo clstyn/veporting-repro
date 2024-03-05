@@ -1,44 +1,59 @@
 "use client";
 
-import Image from "next/image";
-import Button from "@/app/_components/auth/button";
+import { useState, useContext } from "react";
 import Link from "next/link";
-import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import Button from "@/app/_components/auth/button";
+import { AuthContext } from "@/app/_context/authContext";
 import { useRouter } from "next/navigation";
 
 export default function Page() {
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+  const { login } = useContext(AuthContext);
   const router = useRouter();
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  }
 
   async function onSubmit(event) {
     event.preventDefault();
-    setIsLoading(true);
-    setError(null); // Clear previous errors when a new request starts
-    router.push("/dashboard");
-    // try {
-    //   const formData = new FormData(event.currentTarget);
-    //   const response = await fetch("#", {
-    //     // ganti link
-    //     method: "POST",
-    //     body: formData,
-    //   });
+    setError(null);
 
-    //   if (!response.ok) {
-    //     throw new Error("Failed to submit the data. Please try again.");
-    //   }
+    try {
+      const response = await fetch("/api/auth/sign-in", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    //   // Handle response if necessary
-    //   const data = await response.json();
-    //   // ...
-    // } catch (error) {
-    //   // Capture the error message to display to the user
-    //   setError(error.message);
-    //   console.error(error);
-    // } finally {
-    //   setIsLoading(false);
-    // }
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message);
+      }
+
+      const data = await response.json();
+      login(data);
+      router.push("/dashboard");
+      toast.success("Login success");
+    } catch (error) {
+      setError(error);
+      toast.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   }
+
   return (
     <div className="p-6">
       <div className="flex flex-col items-center">
@@ -49,13 +64,17 @@ export default function Page() {
       <form onSubmit={onSubmit}>
         <div className="mt-4">
           <div className="flex flex-col">
-            <label htmlFor="email" className="font-medium font-[#535353] mb-2">
-              Email
+            <label
+              htmlFor="username"
+              className="font-medium font-[#535353] mb-2"
+            >
+              Username atau email
             </label>
             <input
               type="text"
-              name="email"
+              name="username"
               className="bg-[#F6F6F6] border border-[#BFBFBF] rounded-md h-12 focus:outline-none px-2"
+              onChange={handleChange}
             />
           </div>
         </div>
@@ -69,9 +88,10 @@ export default function Page() {
               Password
             </label>
             <input
-              type="text"
+              type="password"
               name="password"
               className="bg-[#F6F6F6] border border-[#BFBFBF] rounded-md h-12 focus:outline-none px-2"
+              onChange={handleChange}
             />
           </div>
         </div>
