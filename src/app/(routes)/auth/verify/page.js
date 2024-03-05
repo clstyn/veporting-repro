@@ -3,10 +3,12 @@
 import Image from "next/image";
 import { Fragment, useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Modal from "../modal";
+import {Modal} from "../modal";
+import Button from "@/app/ui/auth/button";
 
 export default function Verify() {
   const clickRef = useRef(null);
+  const modalRef = useRef(null);
   const [time, setTime] = useState({
     minutes: parseInt(1),
     seconds: parseInt(0),
@@ -31,10 +33,6 @@ export default function Verify() {
 
   const closeModal = () => {
     setIsOpen(false);
-  };
-
-  const openModal = () => {
-    setIsOpen(true);
   };
 
   const handleCorrectCode = () => {
@@ -140,7 +138,11 @@ export default function Verify() {
               </div>
             </Modal>
           </p>
+          <Button onClick={()=>{modalRef.current.openModal()}} className="mt-4">
+            Verifikasi
+          </Button>
           <Modal
+            ref={modalRef}
             buttonClass={`mt-4`}
             buttonText={`Verifikasi Kode`}
             type={isTrue ? "success" : "failed"}
