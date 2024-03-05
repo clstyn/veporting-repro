@@ -5,8 +5,8 @@ import { HiMiniDocumentText } from "react-icons/hi2";
 import { HiExclamationTriangle } from "react-icons/hi2";
 import { HiMiniDocumentCheck } from "react-icons/hi2";
 
-import LineChart from "@/app/routes/(with-bar)/dashboard/_linechart";
-import PieChart from "@/app/routes/(with-bar)/dashboard/_piechart";
+import LineChart from "@/app/(routes)/(with-bar)/dashboard/_linechart";
+import PieChart from "@/app/(routes)/(with-bar)/dashboard/_piechart";
 import Table from "@/app/_components/dashboard/table/table";
 import { useReportsData } from "@/app/_services/dataServices";
 import { useEffect, useState } from "react";
