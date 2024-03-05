@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import Button from "@/app/_components/auth/button";
 import { AuthContext } from "@/app/_context/authContext";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [error, setError] = useState(null);

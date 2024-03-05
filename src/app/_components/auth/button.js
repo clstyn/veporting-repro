@@ -3,7 +3,7 @@ export default function Button({
   children,
   className = "",
   onClick = null,
-  style,
+  mode,
   disabled = false,
 }) {
   const additionalClasses = className
@@ -13,11 +13,7 @@ export default function Button({
   return (
     <button
       onClick={onClick}
-      className={
-        style === "custom"
-          ? ""
-          : `bg-red-700 text-white p-2 rounded-md w-full ${additionalClasses}`
-      }
+      className={mode === 'custom' ? `${additionalClasses}` : `bg-red-700 text-white p-2 rounded-md w-full ${additionalClasses}`}
       type={type}
       disabled={disabled}
     >
