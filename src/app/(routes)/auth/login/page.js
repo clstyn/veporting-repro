@@ -4,38 +4,40 @@ import Image from "next/image";
 import Button from "@/app/_components/auth/button";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   async function onSubmit(event) {
     event.preventDefault();
     setIsLoading(true);
     setError(null); // Clear previous errors when a new request starts
+    router.push("/dashboard");
+    // try {
+    //   const formData = new FormData(event.currentTarget);
+    //   const response = await fetch("#", {
+    //     // ganti link
+    //     method: "POST",
+    //     body: formData,
+    //   });
 
-    try {
-      const formData = new FormData(event.currentTarget);
-      const response = await fetch("#", {
-        // ganti link
-        method: "POST",
-        body: formData,
-      });
+    //   if (!response.ok) {
+    //     throw new Error("Failed to submit the data. Please try again.");
+    //   }
 
-      if (!response.ok) {
-        throw new Error("Failed to submit the data. Please try again.");
-      }
-
-      // Handle response if necessary
-      const data = await response.json();
-      // ...
-    } catch (error) {
-      // Capture the error message to display to the user
-      setError(error.message);
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
+    //   // Handle response if necessary
+    //   const data = await response.json();
+    //   // ...
+    // } catch (error) {
+    //   // Capture the error message to display to the user
+    //   setError(error.message);
+    //   console.error(error);
+    // } finally {
+    //   setIsLoading(false);
+    // }
   }
   return (
     <div className="p-6">

@@ -3,8 +3,8 @@
 import Image from "next/image";
 import { Fragment, useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import {Modal} from "../modal";
-import Button from "@/app/ui/auth/button";
+import {Modal} from "@/app/_components/modal";
+import Button from "@/app/_components/auth/button";
 
 export default function Verify() {
   const clickRef = useRef(null);
@@ -163,57 +163,6 @@ export default function Verify() {
           </Modal>
         </div>
       </div>
-
-      {/* <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-black/25" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title as={Fragment}>
-                    <Image
-                      src={isTrue ? `/success.svg` : `/failed.svg`}
-                      alt={isTrue ? "success" : "failed"}
-                      width={120}
-                      height={120}
-                      className="mx-auto"
-                    />
-                  </Dialog.Title>
-                  
-                  <Button className="mt-4"
-                    onClick={isTrue ? () => {
-                      closeModal();
-                      router.push("/auth/reset-password");
-                    } : handleWrongCode}
-                  >   
-                      {isTrue ? "Buat Password Baru" : "Ketik Ulang"}
-                  </Button>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
-          </div>
-        </Dialog>
-      </Transition> */}
     </>
   );
 }

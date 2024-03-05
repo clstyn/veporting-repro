@@ -4,7 +4,7 @@
 import { Fragment, forwardRef, useRef, useImperativeHandle, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
-import Button from "@/app/ui/auth/button";
+import Button from "@/app/_components/auth/button";
 
 export const Modal = forwardRef(function Modal(
   {
@@ -21,6 +21,9 @@ export const Modal = forwardRef(function Modal(
     openModal: () => {
       openModal();
     },
+    closeModal: () => {
+      closeModal();
+    }
   }));
 
   const [isOpen, setIsOpen] = useState(false)
@@ -29,7 +32,8 @@ export const Modal = forwardRef(function Modal(
     success: "/success.svg",
     failed: "/failed.svg",
     password: "/key.svg",
-    email: "/email.svg"
+    email: "/email.svg",
+    confirm: "/question.svg"
   }
 
   function closeModal() {

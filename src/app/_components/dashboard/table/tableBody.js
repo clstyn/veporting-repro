@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatDate } from "@/app/utils";
+import { formatDate } from "@/app/_utils/utils";
 import { RiPencilFill } from "react-icons/ri";
 import { RiFileDownloadFill } from "react-icons/ri";
 import { RiDeleteBin2Fill } from "react-icons/ri";

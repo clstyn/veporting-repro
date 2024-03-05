@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import InputBar from "@/app/_components/inputBar";
 import QuillBar from "@/app/_components/quillBar";
 import Button from "@/app/_components/auth/button";
+import { Modal } from "@/app/_components/modal";
 
 export default function AddReport() {
   const router = useRouter();
@@ -23,6 +24,8 @@ export default function AddReport() {
     credential_username: "",
     credential_password: "",
   });
+
+  const modalRef = useRef(null);
 
   useEffect(() => {
     console.log(formData);
@@ -48,6 +51,11 @@ export default function AddReport() {
     setFormData({ ...formData, target_address: addresses });
   };
 
+  const handleOpenModal = (e) => {
+    e.preventDefault();
+    modalRef.current.openModal();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
@@ -66,6 +74,7 @@ export default function AddReport() {
       }
       const data = await response.json();
       console.log("Success", data);
+      modalRef.current.closeModal();
       router.push("/report");
     } catch (error) {
       console.error(error);
@@ -173,10 +182,41 @@ export default function AddReport() {
 
           <Button
             className="mt-4 !w-[150px] self-end p-4"
-            onClick={handleSubmit}
+            onClick={handleOpenModal}
           >
             Tambahkan
           </Button>
+
+          <Modal
+            type="confirm"
+            handleExit={() => setIsLoading(false)}
+            ref={modalRef}
+          >
+            <div className="mt-4 flex flex-col items-center">
+              <h1 className="text-2xl font-bold text-zinc-600">
+                Apakah anda yakin?
+              </h1>
+              <p className="text-sm text-gray-500 max-w-[60%] text-center">
+                Apakah isi dari report sudah sesuai, dan ingin submit report
+                anda?
+              </p>
+            </div>
+
+            <div className="flex justify-center gap-2 mt-2 mx-4">
+            <Button
+              onClick={() => {
+                modalRef.current.closeModal();
+              }}
+              mode="custom"
+              className="text-red-700 bg-red-100 rounded-md w-full"
+            >
+              Tidak
+            </Button>
+            <Button onClick={handleSubmit}>
+              {isLoading ? "Loading..." : "Ya"}
+            </Button>
+            </div>
+          </Modal>
         </form>
       </div>
     </>
