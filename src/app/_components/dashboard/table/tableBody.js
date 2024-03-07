@@ -4,6 +4,8 @@ import { RiPencilFill } from "react-icons/ri";
 import { RiFileDownloadFill } from "react-icons/ri";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 
+import { downloadReportById } from "@/app/_services/downloadService";
+
 const TableBody = ({ tableData, columns, actionDelete }) => {
   return (
     <tbody>
@@ -23,7 +25,10 @@ const TableBody = ({ tableData, columns, actionDelete }) => {
                         >
                           <RiPencilFill size={18} color="white" />
                         </Link>
-                        <div className="w-8 rounded-md aspect-square bg-green-600 flex items-center justify-center cursor-pointer">
+                        <div
+                          onClick={() => downloadReportById(data.id)}
+                          className="w-8 rounded-md aspect-square bg-green-600 flex items-center justify-center cursor-pointer"
+                        >
                           <RiFileDownloadFill size={18} color="white" />
                         </div>
                         <div
