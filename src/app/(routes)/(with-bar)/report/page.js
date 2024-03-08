@@ -18,11 +18,11 @@ export default function Report() {
 
   useEffect(() => {
     if (reports) {
-      const formattedReports = reports.map((report) => ({
+      const formattedReports = reports.data.map((report) => ({
         id: report.id,
         client_name: report.client_name,
         product_type:
-          report.product_type == 0
+          report.product_type == "penetration"
             ? "Penetration Testing"
             : "Vulnerability Assessment",
         author: report.author,
