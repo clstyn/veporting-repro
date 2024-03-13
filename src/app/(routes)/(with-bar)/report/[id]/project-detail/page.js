@@ -83,13 +83,13 @@ export default function ProjectDetail({ params }) {
           <div className="p-4 border border-[#BFBFBF] flex flex-col gap-4 rounded-xl mt-4">
             <Link href={`/report/project-detail/tambah-temuan`}>
               {" "}
-              <Button
-                type={"button"}
-                className="!w-[198px] px-2 py-3 rounded-xl flex items-center justify-center gap-2"
+              <Link
+                href={`/report/${params.id}/project-detail/tambah-temuan`}
+                className="bg-red-700 text-white !w-[198px] px-2 py-3 rounded-xl flex items-center justify-center gap-2"
               >
                 <FaPlusCircle size={18} />
                 <h1 className="text-lg font-medium">Tambah Temuan</h1>
-              </Button>
+              </Link>
             </Link>
             <Table className={`mt-4`}>
               <div className="flex gap-2">

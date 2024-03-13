@@ -41,7 +41,8 @@ export default function Home() {
 
   useEffect(() => {
     if (reports) {
-      const formattedReports = reports.map((report) => ({
+      console.log(reports);
+      const formattedReports = reports.data.map((report) => ({
         id: report.id,
         client_name: report.client_name,
         product_type:
