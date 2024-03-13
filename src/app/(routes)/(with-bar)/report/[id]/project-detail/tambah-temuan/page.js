@@ -5,6 +5,7 @@ import InputBar from "@/app/_components/inputBar";
 import QuillBar from "@/app/_components/quillBar";
 import Button from "@/app/_components/auth/button";
 import FormEvent from "react";
+import { xor } from "lodash";
 
 export default function AddTemuan() {
   const [selectedImages, setSelectedImages] = useState([]);
@@ -14,6 +15,9 @@ export default function AddTemuan() {
     recommendation: "",
     reference: "",
   });
+  // const [targetUrlContent, setTargetUrlContent] = useState("");
+  const [description
+    , setDescription] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     level: "",
@@ -29,17 +33,23 @@ export default function AddTemuan() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    console.log(formData);
   };
 
-  const handleQuillChange = (e) => {
-    setQuillContent(e);
+  const handleQuillChange = (e, name) => {
+    setQuillContent(
+      {
+        ...quillContent,
+        [name]: e,
+      }
+    );
   };
 
-  const handleTargetAddressSave = (e) => {
+  const handleQuillSave = (e, prop) => {
     const parser = new DOMParser();
-    const doc = parser.parseFromString(quillContent, "text/html");
-    const addresses = [...doc.querySelectorAll("li")].map((li) => li.innerText);
-    setFormData({ ...formData, target_address: addresses });
+    const doc = parser.parseFromString(quillContent[prop], "text/html");
+    const targets = [...doc.querySelectorAll("li")].map((li) => li.innerText);
+    setFormData({ ...formData, [prop]: targets });
   };
 
   const handleAddImages = (e) => {
@@ -125,12 +135,23 @@ export default function AddTemuan() {
           />
 
           <QuillBar label="Target" 
-          handleChange={handleQuillChange}
-
+          handleEditorChange={(e)=> {
+            handleQuillChange(e,'target');
+          }}
+          handleSave={(e) => {
+            handleQuillSave(e, 'target');
+          }}
+          content={quillContent.target}
           />
 
           <QuillBar label="Deskripsi" 
-          handleChange={handleChange}
+          handleEditorChange={(e) => {
+            handleQuillChange(e, 'description');
+          }}
+          handleSave={(e) => {
+            handleQuillSave(e, "description");
+          }}
+          content={quillContent.description}
           />
 
           <InputBar
@@ -144,11 +165,23 @@ export default function AddTemuan() {
           />
 
           <QuillBar label="Rekomendasi" 
-          handleChange={handleChange}
+          handleEditorChange={(e) => {
+            handleQuillChange(e, "recommendation");
+          }}
+          handleSave={(e) => {
+            handleQuillSave(e, "recommendation");
+          }}
+          content={quillContent.recommendation}
           />
 
           <QuillBar label="Referensi" 
-          handleChange={handleChange}
+          handleEditorChange={(e) => {
+            handleQuillChange(e, "reference");
+          }}
+          handleSave={(e) => {
+            handleQuillSave(e, "reference");
+          }}
+          content={quillContent.reference}
           />
 
           <Button type={"submit"} className="mt-4 !w-[150px] self-end p-4">
