@@ -7,30 +7,26 @@ import { RiPencilFill } from "react-icons/ri";
 import Table from "@/app/_components/dashboard/table/table";
 import Button from "@/app/_components/auth/button";
 import PieChart from "@/app/(routes)/(with-bar)/dashboard/_piechart";
-import { useReportsDataById } from "@/app/_services/dataServices";
+import {
+  useReportsDataById,
+  useFindingsData,
+} from "@/app/_services/dataServices";
 import { formatDate } from "@/app/_utils/utils";
 
 export default function ProjectDetail({ params }) {
   const { report, isLoading, isError } = useReportsDataById(params.id);
+  const { findings } = useFindingsData();
 
   const [reportData, setReportData] = useState();
 
   useEffect(() => {
     if (report) {
       const formattedReport = {
-        id: report.id,
-        client_name: report.client_name,
+        ...report.data,
         product_type:
-          report.product_type == 0
+          report.product_type == "penetration"
             ? "Penetration Testing"
             : "Vulnerability Assessment",
-        report_date: report.report_date,
-        test_method: report.test_method,
-        framework: report.framework,
-        target_type: report.target_type,
-        target_address: report.target_address,
-        credential_username: report.credential_username,
-        credential_password: report.credential_password,
       };
       setReportData(formattedReport);
     }
@@ -81,7 +77,7 @@ export default function ProjectDetail({ params }) {
         <div className="col-span-2">
           <h1 className="text-xl font-medium">Temuan</h1>
           <div className="p-4 border border-[#BFBFBF] flex flex-col gap-4 rounded-xl mt-4">
-            <Link href={`/report/project-detail/tambah-temuan`}>
+            <div>
               {" "}
               <Link
                 href={`/report/${params.id}/project-detail/tambah-temuan`}
@@ -90,8 +86,26 @@ export default function ProjectDetail({ params }) {
                 <FaPlusCircle size={18} />
                 <h1 className="text-lg font-medium">Tambah Temuan</h1>
               </Link>
-            </Link>
-            <Table className={`mt-4`}>
+            </div>
+            <Table
+              className={`mt-4`}
+              columns={[
+                { label: "Temuan", accessor: "name", sortable: true },
+                {
+                  label: "Severity",
+                  accessor: "level",
+                  sortable: true,
+                },
+                { label: "CVSS", accessor: "cvss", sortable: true },
+                {
+                  label: "Status",
+                  accessor: "status",
+                  sortable: true,
+                },
+                { label: "Aksi", accessor: "action" },
+              ]}
+              // tableData={  }
+            >
               <div className="flex gap-2">
                 <div className="w-8 rounded-md aspect-square bg-blue-600 flex items-center justify-center cursor-pointer">
                   <RiPencilFill size={18} color="white" />
