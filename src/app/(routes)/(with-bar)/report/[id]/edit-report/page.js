@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 import _ from "lodash";
 import { useReportsDataById } from "@/app/_services/dataServices";
 import InputBar from "@/app/_components/inputBar";
 import QuillBar from "@/app/_components/quillBar";
 import Button from "@/app/_components/auth/button";
+import { AuthContext } from "@/app/_context/authContext";
 
 export default function EditReport({ params }) {
+  const { token } = useContext(AuthContext);
   const { report, isLoading, isError } = useReportsDataById(params.id);
   const [reportDate, setReportDate] = useState();
   const [reportData, setReportData] = useState();
@@ -54,6 +56,7 @@ export default function EditReport({ params }) {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       });

@@ -1,14 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 import InputBar from "@/app/_components/inputBar";
 import QuillBar from "@/app/_components/quillBar";
 import Button from "@/app/_components/auth/button";
 import { Modal } from "@/app/_components/modal";
+import { AuthContext } from "@/app/_context/authContext";
 
 export default function AddReport() {
   const router = useRouter();
+  const { token } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
   const [reportDate, setReportDate] = useState();
   const [quillContent, setQuillContent] = useState("Test content");
@@ -65,6 +67,7 @@ export default function AddReport() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(formData),
       });
@@ -203,18 +206,18 @@ export default function AddReport() {
             </div>
 
             <div className="flex justify-center gap-2 mt-2 mx-4">
-            <Button
-              onClick={() => {
-                modalRef.current.closeModal();
-              }}
-              mode="custom"
-              className="text-red-700 bg-red-100 rounded-md w-full"
-            >
-              Tidak
-            </Button>
-            <Button onClick={handleSubmit}>
-              {isLoading ? "Loading..." : "Ya"}
-            </Button>
+              <Button
+                onClick={() => {
+                  modalRef.current.closeModal();
+                }}
+                mode="custom"
+                className="text-red-700 bg-red-100 rounded-md w-full"
+              >
+                Tidak
+              </Button>
+              <Button onClick={handleSubmit}>
+                {isLoading ? "Loading..." : "Ya"}
+              </Button>
             </div>
           </Modal>
         </form>

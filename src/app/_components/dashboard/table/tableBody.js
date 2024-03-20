@@ -4,14 +4,18 @@ import { RiPencilFill } from "react-icons/ri";
 import { RiFileDownloadFill } from "react-icons/ri";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 
+import { useContext } from "react";
+import { AuthContext } from "@/app/_context/authContext";
+
 import { downloadReportById } from "@/app/_services/downloadService";
 
 const TableBody = ({ tableData, columns, actionDelete }) => {
+  const { token } = useContext(AuthContext);
   return (
     <tbody>
-      {tableData.map((data, index) => {
+      {tableData.map((data) => {
         return (
-          <tr key={index}>
+          <tr key={data.id}>
             {columns.map(({ accessor, index }) => {
               const tData = data[accessor] ? data[accessor] : "——";
               return (
@@ -26,7 +30,9 @@ const TableBody = ({ tableData, columns, actionDelete }) => {
                           <RiPencilFill size={18} color="white" />
                         </Link>
                         <div
-                          onClick={() => downloadReportById(data.id)}
+                          onClick={() =>
+                            downloadReportById(data.id, data.client_name, token)
+                          }
                           className="w-8 rounded-md aspect-square bg-green-600 flex items-center justify-center cursor-pointer"
                         >
                           <RiFileDownloadFill size={18} color="white" />

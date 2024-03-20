@@ -1,28 +1,27 @@
-export const downloadReportById = async (id) => {
+export const downloadReportById = async (id, clientName, token) => {
   try {
     const response = await fetch(`/api/report/${id}/download`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/octet-stream",
       },
+      responseType: "arrayBuffer",
     });
 
     if (!response.ok) {
       throw new Error("Error downloading report");
     }
 
-    const resData = await response.json();
-    const buff = Buffer.from(resData.data.data, "base64");
-    const fileBlob = new Blob([buff], {
-      type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    });
-    console.log(fileBlob);
+    const resData = await response.arrayBuffer();
+    const fileBlob = new Blob([resData]);
+
     const url = window.URL.createObjectURL(fileBlob);
 
     // Create an anchor element
     const link = document.createElement("a");
     link.href = url;
-    link.setAttribute("download", `${id}.docx`); // Set the file name
+    link.setAttribute("download", `Security Report - ${clientName}.docx`); // Set the file name
     document.body.appendChild(link);
 
     // Initiate download
