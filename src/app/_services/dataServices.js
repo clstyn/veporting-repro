@@ -1,7 +1,10 @@
 import useSWR from "swr";
 
 const fetcher = async (url) => {
-  const token = localStorage.getItem("token");
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    .split("=")[1];
   try {
     const response = await fetch(url, {
       headers: {

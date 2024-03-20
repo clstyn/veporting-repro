@@ -18,11 +18,12 @@ export default function ProjectDetail({ params }) {
   const { findings } = useFindingsData();
 
   const [reportData, setReportData] = useState();
+  const [findingsData, setFindingsData] = useState();
 
   useEffect(() => {
     if (report) {
       const formattedReport = {
-        ...report.data,
+        ...report.data[0],
         product_type:
           report.product_type == "penetration"
             ? "Penetration Testing"
@@ -31,6 +32,24 @@ export default function ProjectDetail({ params }) {
       setReportData(formattedReport);
     }
   }, [report]);
+
+  useEffect(() => {
+    if (findings) {
+      const formattedFindings = findings.data.map((finding) => {
+        return {
+          ...finding,
+          action: (
+            <div className="flex gap-2">
+              <div className="w-8 rounded-md aspect-square bg-blue-600 flex items-center justify-center cursor-pointer">
+                <RiPencilFill size={18} color="white" />
+              </div>
+            </div>
+          ),
+        };
+      });
+      setFindingsData(formattedFindings);
+    }
+  }, [findings]);
 
   return (
     <>
@@ -104,7 +123,7 @@ export default function ProjectDetail({ params }) {
                 },
                 { label: "Aksi", accessor: "action" },
               ]}
-              // tableData={  }
+              tableData={findingsData || []}
             >
               <div className="flex gap-2">
                 <div className="w-8 rounded-md aspect-square bg-blue-600 flex items-center justify-center cursor-pointer">
