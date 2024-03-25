@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import InputBar from "@/app/_components/inputBar";
 import QuillBar from "@/app/_components/quillBar";
 import Button from "@/app/_components/auth/button";
@@ -45,7 +46,6 @@ export default function EditTemuan({ params }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    console.log(formData);
   };
 
   const handleQuillChange = (e, name) => {
@@ -105,27 +105,41 @@ export default function EditTemuan({ params }) {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    const reqBody = {
+      ...formData,
+      level: parseInt(formData.level),
+      cvss: parseFloat(formData.cvss),
+    };
+
+    console.log(reqBody);
+
     try {
-      const response = await fetch(`/api/finding/${params.id}`, {
+      const response = await fetch(`/api/finding/${params.findingId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(newData),
+        body: JSON.stringify(reqBody),
       });
 
       if (!response.ok) {
         throw new Error("Error updating report");
       }
+
       const data = await response.json();
       console.log("Success", data);
       router.push(`/report/${params.id}/project-detail`);
+      toast.success("Berhasil menambahkan temuan");
     } catch (error) {
       toast.error(error.message);
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   return (
     <>
