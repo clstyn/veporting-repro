@@ -54,16 +54,16 @@ export default function InputBar({
           onChange={handleChange}
         />
       ) : inputType === "radioChoice" ? (
-        <fieldset>
+        <fieldset className="w-full flex gap-4" onChange={handleChange}>
           <div>
-            <input type="radio" id="open" name="drone" value="open" />
+            <input type="radio" id="open" name="status" value="open" />
             <label className="ml-2" for="open">
               Open
             </label>
           </div>
           <div>
-            <input type="radio" id="close" name="drone" value="close" />
-            <label className="ml-2" for="close">
+            <input type="radio" id="closed" name="status" value="closed" />
+            <label className="ml-2" for="closed">
               Closed
             </label>
           </div>

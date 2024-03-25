@@ -1,17 +1,19 @@
 "use client";
 
-import { useEffect, useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 import InputBar from "@/app/_components/inputBar";
 import QuillBar from "@/app/_components/quillBar";
 import Button from "@/app/_components/auth/button";
+import { useFindingDataById } from "@/app/_services/dataServices";
 import { AuthContext } from "@/app/_context/authContext";
 
-export default function AddTemuan({ params }) {
-  const router = useRouter();
+export default function EditTemuan({ params }) {
   const { token } = useContext(AuthContext);
   const reportId = params.id;
+  const { finding } = useFindingDataById(params.findingId);
+  const router = useRouter();
+
   const [selectedImages, setSelectedImages] = useState([]);
   const [quillContent, setQuillContent] = useState({
     target: "",
@@ -19,7 +21,6 @@ export default function AddTemuan({ params }) {
     recommendation: "",
     reference: "",
   });
-  // const [targetUrlContent, setTargetUrlContent] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -33,6 +34,13 @@ export default function AddTemuan({ params }) {
     reference: [],
     reportId: reportId,
   });
+
+  useEffect(() => {
+    if (finding) {
+      setFormData(finding);
+      console.log(finding);
+    }
+  }, [finding]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -96,45 +104,28 @@ export default function AddTemuan({ params }) {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    // get all values from input and set it on formData state
-
-    const reqBody = {
-      ...formData,
-      level: parseInt(formData.level),
-      cvss: parseFloat(formData.cvss),
-    };
 
     try {
-      const res = await fetch("/api/finding", {
-        method: "POST",
-        body: JSON.stringify(reqBody),
+      const response = await fetch(`/api/finding/${params.id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify(newData),
       });
 
-      if (!res.ok) {
-        throw new Error("Error");
+      if (!response.ok) {
+        throw new Error("Error updating report");
       }
-
-      const data = await res.json();
-      console.log(data);
-      router.push(`/report/${reportId}/project-detail`);
-      toast.success("Berhasil menambahkan temuan");
+      const data = await response.json();
+      console.log("Success", data);
+      router.push(`/report/${params.id}/project-detail`);
     } catch (error) {
-      console.log(error);
       toast.error(error.message);
+      console.error(error);
     }
   };
-
-  useEffect(() => {
-    console.log(selectedImages);
-  }, [selectedImages]);
-
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
 
   return (
     <>
@@ -144,9 +135,8 @@ export default function AddTemuan({ params }) {
           className="flex flex-col w-1/2 mx-auto"
           onSubmit={onSubmit}
         >
-          <h1 className="text-xl font-semibold">Tambah Temuan</h1>
+          <h1 className="text-xl font-semibold">Edit Temuan</h1>
           <p className="text-sm mb-4">Informasi Temuan</p>
-
           <InputBar
             labelText="Nama Temuan"
             handleChange={handleChange}
@@ -235,9 +225,20 @@ export default function AddTemuan({ params }) {
             content={quillContent.reference}
           />
 
-          <Button type={"submit"} className="mt-4 !w-[150px] self-end p-4">
-            Tambahkan
-          </Button>
+          <div className="flex gap-4 justify-end">
+            <Button
+              type={"button"}
+              onClick={() => {
+                router.back();
+              }}
+              className="mt-4 !w-[150px] p-4 !bg-[#FFEEF0] !text-red-700"
+            >
+              Batal
+            </Button>
+            <Button type={"submit"} className="mt-4 !w-[150px] p-4">
+              Simpan
+            </Button>
+          </div>
         </form>
       </div>
     </>

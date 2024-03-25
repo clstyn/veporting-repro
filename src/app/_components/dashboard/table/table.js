@@ -1,4 +1,3 @@
-import { useState } from "react";
 import TableBody from "@/app/_components/dashboard/table/tableBody";
 import TableHead from "@/app/_components/dashboard/table/tableHeader";
 
@@ -12,7 +11,7 @@ const Table = ({
     { label: "Status", accessor: "status", sortable: true },
   ],
   className = "",
-  actionDelete = () => {},
+  actionColumn = () => {},
 }) => {
   return (
     <table
@@ -22,7 +21,7 @@ const Table = ({
       <TableBody
         columns={columns}
         tableData={tableData}
-        actionDelete={actionDelete}
+        actionColumn={actionColumn}
       />
     </table>
   );

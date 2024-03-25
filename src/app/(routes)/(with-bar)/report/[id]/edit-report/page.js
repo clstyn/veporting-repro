@@ -171,7 +171,7 @@ export default function EditReport({ params }) {
             <Button
               type={"button"}
               onClick={() => {
-                router.push("/report");
+                router.back();
               }}
               className="mt-4 !w-[150px] p-4 !bg-[#FFEEF0] !text-red-700"
             >

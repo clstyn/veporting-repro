@@ -23,7 +23,7 @@ export default function ProjectDetail({ params }) {
   useEffect(() => {
     if (report) {
       const formattedReport = {
-        ...report.data[0],
+        ...report,
         product_type:
           report.product_type == "penetration"
             ? "Penetration Testing"
@@ -35,7 +35,7 @@ export default function ProjectDetail({ params }) {
 
   useEffect(() => {
     if (findings) {
-      const formattedFindings = findings.data.map((finding) => {
+      const formattedFindings = findings.map((finding) => {
         return {
           ...finding,
           action: (
@@ -123,6 +123,18 @@ export default function ProjectDetail({ params }) {
                 },
                 { label: "Aksi", accessor: "action" },
               ]}
+              actionColumn={(data) => {
+                return (
+                  <div className="flex gap-2">
+                    <Link
+                      href={`/report/${params.id}/project-detail/${data.id}/edit-temuan`}
+                      className="w-8 rounded-md aspect-square bg-blue-600 flex items-center justify-center cursor-pointer"
+                    >
+                      <RiPencilFill size={18} color="white" />
+                    </Link>
+                  </div>
+                );
+              }}
               tableData={findingsData || []}
             >
               <div className="flex gap-2">

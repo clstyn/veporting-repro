@@ -2,11 +2,15 @@ import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Button from "@/app/_components/auth/button";
 
-const DeletePopup = ({ isDeleteOpen, idData, onClose }) => {
+const DeletePopup = ({ isDeleteOpen, idData, onClose, token }) => {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`/api/report/${id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (!response.ok) {

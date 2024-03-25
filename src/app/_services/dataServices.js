@@ -16,7 +16,7 @@ const fetcher = async (url) => {
       throw new Error("Network response was not ok");
     }
     const data = await response.json();
-    return data;
+    return data.data;
   } catch (error) {
     throw new Error("Failed to fetch data");
   }
@@ -38,7 +38,7 @@ export const useReportsDataById = (id) => {
   const { data, error } = useSWR(`/api/report/${id}`, fetcher);
 
   return {
-    report: data,
+    report: data ? data[0] : null,
     isLoading: !error && !data,
     isError: error,
   };
@@ -58,7 +58,7 @@ export const useFindingDataById = (id) => {
   const { data, error } = useSWR(`/api/finding/${id}`, fetcher);
 
   return {
-    finding: data,
+    finding: data ? data : null,
     isLoading: !error && !data,
     isError: error,
   };
