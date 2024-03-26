@@ -211,6 +211,7 @@ export default function AddTemuan({ params }) {
             handleDrop={handleDrop}
             handleDragOver={handleDragOver}
             handlePasteImage={handlePaste}
+            removeSelectedImage={removeSelectedImage}
           />
 
           <QuillBar

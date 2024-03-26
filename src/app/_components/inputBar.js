@@ -57,13 +57,13 @@ export default function InputBar({
         <fieldset className="w-full flex gap-4" onChange={handleChange}>
           <div>
             <input type="radio" id="open" name="status" value="open" />
-            <label className="ml-2" for="open">
+            <label className="ml-2" htmlFor="open">
               Open
             </label>
           </div>
           <div>
             <input type="radio" id="closed" name="status" value="closed" />
-            <label className="ml-2" for="closed">
+            <label className="ml-2" htmlFor="closed">
               Closed
             </label>
           </div>
@@ -72,7 +72,13 @@ export default function InputBar({
         <div>
           <div className="h-[124px] w-full rounded bg-[#F6F6F6] border border-[#BFBFBF] focus:outline-none p-2 my-2 flex flex-wrap gap-2">
             {selectedImages.map((image, index) => (
-              <div key={index} className="h-full aspect-square">
+              <div key={index} className="h-full aspect-square relative">
+                <div
+                  className="cursor-pointer absolute bg-red-500 text-white rounded-full w-6 aspect-square -top-2 -right-2 text-center"
+                  onClick={() => removeSelectedImage(index)}
+                >
+                  x
+                </div>
                 <Image
                   src={URL.createObjectURL(image)}
                   width={200}
