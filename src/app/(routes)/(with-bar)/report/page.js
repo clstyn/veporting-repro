@@ -72,6 +72,8 @@ export default function Report() {
             { label: "Status", accessor: "status", sortable: true },
             { label: "Aksi", accessor: "action" },
           ]}
+          paginationCtl={true}
+          itemsPerPage={10}
           tableData={reportsData}
           actionColumn={(data, token) => {
             return (

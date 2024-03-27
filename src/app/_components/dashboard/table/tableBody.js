@@ -1,14 +1,25 @@
 import Link from "next/link";
 import { formatDate } from "@/app/_utils/utils";
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "@/app/_context/authContext";
 
-const TableBody = ({ tableData, columns, actionColumn }) => {
+const TableBody = ({
+  tableData,
+  columns,
+  actionColumn,
+  currPage,
+  itemsPerPage,
+}) => {
   const { token } = useContext(AuthContext);
+
+  const startIndex = (currPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedData = tableData.slice(startIndex, endIndex);
+
   return (
     <tbody>
-      {tableData.map((data) => {
+      {paginatedData?.map((data) => {
         return (
           <tr key={data.id}>
             {columns.map(({ accessor }, index) => {

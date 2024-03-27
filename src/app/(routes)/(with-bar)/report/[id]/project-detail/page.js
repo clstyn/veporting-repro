@@ -123,6 +123,8 @@ export default function ProjectDetail({ params }) {
                 },
                 { label: "Aksi", accessor: "action" },
               ]}
+              paginationCtl={true}
+              itemsPerPage={5}
               actionColumn={(data) => {
                 return (
                   <div className="flex gap-2">
