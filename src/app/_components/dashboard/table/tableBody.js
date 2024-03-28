@@ -9,7 +9,7 @@ const TableBody = ({
   columns,
   actionColumn,
   currPage,
-  itemsPerPage,
+  itemsPerPage = 5,
 }) => {
   const { token } = useContext(AuthContext);
 

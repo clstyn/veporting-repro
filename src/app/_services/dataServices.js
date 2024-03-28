@@ -44,8 +44,8 @@ export const useReportsDataById = (id) => {
   };
 };
 
-export const useFindingsData = () => {
-  const { data, error } = useSWR("/api/finding", fetcher);
+export const useFindingsData = (reportId) => {
+  const { data, error } = useSWR(`/api/finding?reportId=${reportId}`, fetcher);
 
   return {
     findings: data,

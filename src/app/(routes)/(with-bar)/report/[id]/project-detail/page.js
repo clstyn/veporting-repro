@@ -15,7 +15,7 @@ import { formatDate } from "@/app/_utils/utils";
 
 export default function ProjectDetail({ params }) {
   const { report, isLoading, isError } = useReportsDataById(params.id);
-  const { findings } = useFindingsData();
+  const { findings } = useFindingsData(params.id);
 
   const [reportData, setReportData] = useState();
   const [findingsData, setFindingsData] = useState();
