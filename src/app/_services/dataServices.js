@@ -63,3 +63,13 @@ export const useFindingDataById = (id) => {
     isError: error,
   };
 };
+
+export const useActivityLogData = () => {
+  const { data, error } = useSWR("/api/activity-log", fetcher);
+
+  return {
+    activityLog: data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+};
