@@ -40,14 +40,13 @@ export default function Page() {
         const data = await response.json();
         throw new Error(data.message);
       }
-
       const data = await response.json();
       login(data);
       router.push("/dashboard");
       toast.success("Login success");
     } catch (error) {
-      setError(error);
-      toast.error(error);
+      setError(error.message);
+      toast.error(error.message);
     } finally {
       setIsLoading(false);
     }
