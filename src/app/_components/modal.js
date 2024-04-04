@@ -11,6 +11,7 @@ export const Modal = forwardRef(function Modal(
   type = "",
   children,
   exitButton = "",
+  noImage = false,
   handleExit = () => {},
   handleBeforeLoad = () => {},
   },
@@ -78,14 +79,16 @@ export const Modal = forwardRef(function Modal(
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title as={Fragment}>
-                  <Image
+                <Dialog.Title>
+                  {!noImage ? (
+                    <Image
                     src={Object.keys(imageUrl).includes(type) ? imageUrl[type] : "/success.svg"}
                     alt={Object.keys(imageUrl).includes(type) ? type : "success"}
                     width={120}
                     height={120}
                     className="mx-auto"
-                  />
+                  />) : null  
+                  }
                 </Dialog.Title>
                 
                  {children}

@@ -9,7 +9,9 @@ import LineChart from "@/app/(routes)/(with-bar)/dashboard/_linechart";
 import PieChart from "@/app/(routes)/(with-bar)/dashboard/_piechart";
 import Table from "@/app/_components/dashboard/table/table";
 import { useReportsData } from "@/app/_services/dataServices";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Modal } from "@/app/_components/modal";
+import Button from "@/app/_components/auth/button";
 
 const cardList = [
   {
@@ -38,10 +40,12 @@ const cardList = [
 export default function Home() {
   const { reports, isLoading, isError } = useReportsData();
   const [reportsData, setReportsData] = useState([]);
+  const [dateRange, setDateRange] = useState("-");
+  const [customDate, setCustomDate] = useState(null);
+  const modalRef = useRef(null);
 
   useEffect(() => {
     if (reports) {
-      console.log(reports);
       const formattedReports = reports.map((report) => ({
         id: report.id,
         client_name: report.client_name,
@@ -53,9 +57,25 @@ export default function Home() {
         end_date: report.end_date,
         status: report.end_date > new Date() ? "Ongoing" : "Done",
       }));
-      setReportsData(formattedReports);
+    
+      const newData = formattedReports.filter((report) => {
+        if(customDate) {
+          const startDate = new Date(customDate.startDate);
+          const endDate = new Date(customDate.endDate);
+          return endDate >= new Date(report.end_date) && startDate <= new Date(report.end_date);
+        }
+        const endDate = new Date(report.end_date);
+        const now = new Date();
+        const diffTime = Math.abs(now - endDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays <= Number(dateRange);
+      });
+  
+      setReportsData(newData);
+    
     }
-  }, [reports]);
+
+  }, [reports, dateRange, customDate]);
 
   return (
     <div className="rounded-xl grid grid-cols-3 gap-4">
@@ -70,10 +90,22 @@ export default function Home() {
           <select
             name="date"
             id="date"
-            disabled="disabled"
             className="text-black"
+            onChange={(e) => {
+              if(e.target.value !== "-") {
+                setDateRange(e.target.value)
+                setCustomDate(null);
+              }else{
+                modalRef.current.openModal();
+              }
+            }}
           >
-            <option value="0">select date</option>
+            <option value="7">Last 7 Day</option>
+            <option value="30">Last 30 Day</option>
+            <option value="360">Last Year</option>
+            <option value="-">{
+              customDate ? `${customDate.startDate} - ${customDate.endDate}` : "Custom Date"
+            }</option>
           </select>
         </div>
       </div>
@@ -115,6 +147,39 @@ export default function Home() {
           tableData={reportsData}
         />
       </div>
+      <Modal
+        ref={modalRef}
+        noImage= {true}
+        handleExit={() => {
+          console.log(customDate);
+        }}
+        handleBeforeLoad={() => {}}
+      >
+        <h2 className="text-2xl font-bold text-zinc-600 mb-2">
+          Custom Date
+        </h2>
+
+        <label className="text-sm text-gray-500">Start Date</label>
+        <input 
+        className="w-full p-2 border border-gray-300 rounded-md mb-4"
+        type="date" name="startDate" onChange={(e) => {
+          setCustomDate({
+            ...customDate,
+            [e.target.name]: e.target.value
+          })
+          }} />
+
+        <label className="text-sm text-gray-500">End Date</label>
+        <input 
+        className="w-full p-2 border border-gray-300 rounded-md mb-4"
+        type="date" name="endDate" onChange={(e) => {
+          setCustomDate({
+            ...customDate,
+            [e.target.name]: e.target.value
+          })
+          }} />
+      
+      </Modal>
     </div>
   );
 }
