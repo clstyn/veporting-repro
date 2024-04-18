@@ -17,6 +17,14 @@ const TableBody = ({
   const endIndex = startIndex + itemsPerPage;
   const paginatedData = tableData.slice(startIndex, endIndex);
 
+  if (tableData.length === 0) {
+    return (
+      <tbody>
+        <tr className="text-center">Tidak ada data tersedia.</tr>
+      </tbody>
+    );
+  }
+
   return (
     <tbody>
       {paginatedData?.map((data) => {

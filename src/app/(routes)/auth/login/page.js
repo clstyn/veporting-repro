@@ -26,6 +26,7 @@ export default function Page() {
   async function onSubmit(event) {
     event.preventDefault();
     setError(null);
+    setIsLoading(true);
 
     try {
       const response = await fetch("/api/auth/sign-in", {
@@ -95,7 +96,9 @@ export default function Page() {
         </div>
 
         <div className="mt-4">
-          <Button type="submit">Login</Button>
+          <Button disabled={isLoading}>
+            {isLoading ? "Loading..." : "Login"}
+          </Button>
         </div>
       </form>
 

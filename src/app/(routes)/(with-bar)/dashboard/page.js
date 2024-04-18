@@ -11,33 +11,9 @@ import Table from "@/app/_components/dashboard/table/table";
 import { useReportsData } from "@/app/_services/dataServices";
 import { useEffect, useRef, useState } from "react";
 import { Modal } from "@/app/_components/modal";
-import Button from "@/app/_components/auth/button";
-
-const cardList = [
-  {
-    id: "card-1",
-    title: "Total",
-    value: 1000,
-    iconColor: "bg-blue-500",
-    icon: HiMiniDocumentText,
-  },
-  {
-    id: "card-2",
-    title: "Pending",
-    value: 1000,
-    iconColor: "bg-orange-500",
-    icon: HiExclamationTriangle,
-  },
-  {
-    id: "card-3",
-    title: "Approved",
-    value: 1000,
-    iconColor: "bg-green-500",
-    icon: HiMiniDocumentCheck,
-  },
-];
 
 export default function Home() {
+  const [cardList, setcardList] = useState();
   const { reports, isLoading, isError } = useReportsData();
   const [reportsData, setReportsData] = useState([]);
   const [dateRange, setDateRange] = useState("-");
@@ -57,12 +33,15 @@ export default function Home() {
         end_date: report.end_date,
         status: report.end_date > new Date() ? "Ongoing" : "Done",
       }));
-    
+
       const newData = formattedReports.filter((report) => {
-        if(customDate) {
+        if (customDate) {
           const startDate = new Date(customDate.startDate);
           const endDate = new Date(customDate.endDate);
-          return endDate >= new Date(report.end_date) && startDate <= new Date(report.end_date);
+          return (
+            endDate >= new Date(report.end_date) &&
+            startDate <= new Date(report.end_date)
+          );
         }
         const endDate = new Date(report.end_date);
         const now = new Date();
@@ -70,12 +49,42 @@ export default function Home() {
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         return diffDays <= Number(dateRange);
       });
-  
-      setReportsData(newData);
-    
-    }
 
+      setReportsData(newData);
+    }
   }, [reports, dateRange, customDate]);
+
+  useEffect(() => {
+    setcardList([
+      {
+        id: "card-1",
+        title: "Total",
+        value: reports ? reports.length : 0,
+        iconColor: "bg-blue-500",
+        icon: HiMiniDocumentText,
+      },
+      {
+        id: "card-2",
+        title: "Pending",
+        value: reports
+          ? reports.filter((report) => new Date(report.end_date) > new Date())
+              .length
+          : 0,
+        iconColor: "bg-orange-500",
+        icon: HiExclamationTriangle,
+      },
+      {
+        id: "card-3",
+        title: "Approved",
+        value: reports
+          ? reports.filter((report) => new Date(report.end_date) <= new Date())
+              .length
+          : 0,
+        iconColor: "bg-green-500",
+        icon: HiMiniDocumentCheck,
+      },
+    ]);
+  }, [reports]);
 
   return (
     <div className="rounded-xl grid grid-cols-3 gap-4">
@@ -92,10 +101,10 @@ export default function Home() {
             id="date"
             className="text-black"
             onChange={(e) => {
-              if(e.target.value !== "-") {
-                setDateRange(e.target.value)
+              if (e.target.value !== "-") {
+                setDateRange(e.target.value);
                 setCustomDate(null);
-              }else{
+              } else {
                 modalRef.current.openModal();
               }
             }}
@@ -103,15 +112,17 @@ export default function Home() {
             <option value="7">Last 7 Day</option>
             <option value="30">Last 30 Day</option>
             <option value="360">Last Year</option>
-            <option value="-">{
-              customDate ? `${customDate.startDate} - ${customDate.endDate}` : "Custom Date"
-            }</option>
+            <option value="-">
+              {customDate
+                ? `${customDate.startDate} - ${customDate.endDate}`
+                : "Custom Date"}
+            </option>
           </select>
         </div>
       </div>
 
       {/* Total, Pending, Approved */}
-      {cardList.map((card) => (
+      {cardList?.map((card) => (
         <Card
           title={card.title}
           Icon={card.icon}
@@ -129,7 +140,18 @@ export default function Home() {
 
       <div className="p-6 font-semibold text-lg bg-white rounded-xl">
         <p>Jenis Report</p>
-        <PieChart />
+        {reports && (
+          <PieChart
+            p={
+              reports.filter((report) => report.product_type == "penetration")
+                .length
+            }
+            v={
+              reports.filter((report) => report.product_type != "penetration")
+                .length
+            }
+          />
+        )}
       </div>
 
       {/* Tabel */}
@@ -149,36 +171,39 @@ export default function Home() {
       </div>
       <Modal
         ref={modalRef}
-        noImage= {true}
+        noImage={true}
         handleExit={() => {
           console.log(customDate);
         }}
         handleBeforeLoad={() => {}}
       >
-        <h2 className="text-2xl font-bold text-zinc-600 mb-2">
-          Custom Date
-        </h2>
+        <h2 className="text-2xl font-bold text-zinc-600 mb-2">Custom Date</h2>
 
         <label className="text-sm text-gray-500">Start Date</label>
-        <input 
-        className="w-full p-2 border border-gray-300 rounded-md mb-4"
-        type="date" name="startDate" onChange={(e) => {
-          setCustomDate({
-            ...customDate,
-            [e.target.name]: e.target.value
-          })
-          }} />
+        <input
+          className="w-full p-2 border border-gray-300 rounded-md mb-4"
+          type="date"
+          name="startDate"
+          onChange={(e) => {
+            setCustomDate({
+              ...customDate,
+              [e.target.name]: e.target.value,
+            });
+          }}
+        />
 
         <label className="text-sm text-gray-500">End Date</label>
-        <input 
-        className="w-full p-2 border border-gray-300 rounded-md mb-4"
-        type="date" name="endDate" onChange={(e) => {
-          setCustomDate({
-            ...customDate,
-            [e.target.name]: e.target.value
-          })
-          }} />
-      
+        <input
+          className="w-full p-2 border border-gray-300 rounded-md mb-4"
+          type="date"
+          name="endDate"
+          onChange={(e) => {
+            setCustomDate({
+              ...customDate,
+              [e.target.name]: e.target.value,
+            });
+          }}
+        />
       </Modal>
     </div>
   );

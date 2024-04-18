@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 
-export default function PieChart() {
+export default function PieChart({ p, v }) {
   const pieChartRef = useRef(null);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ export default function PieChart() {
           labels: ["Penetration Testing", "Vulnerability Assessment"],
           datasets: [
             {
-              data: [34, 40],
+              data: [p, v],
               borderColor: ["#FF9F2E", "#BE1D2D"],
               backgroundColor: ["rgba(255, 159, 46, 1)", "rgb(190, 29, 45, 1)"],
               borderWidth: 2,
