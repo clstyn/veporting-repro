@@ -14,6 +14,7 @@ export default function EditTemuan({ params }) {
   const reportId = params.id;
   const { finding } = useFindingDataById(params.findingId);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [selectedImages, setSelectedImages] = useState([]);
   const [quillContent, setQuillContent] = useState({
@@ -104,7 +105,7 @@ export default function EditTemuan({ params }) {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     const reqBody = {
       ...formData,
       level: parseInt(formData.level),
@@ -134,6 +135,8 @@ export default function EditTemuan({ params }) {
     } catch (error) {
       toast.error(error.message);
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -250,8 +253,12 @@ export default function EditTemuan({ params }) {
             >
               Batal
             </Button>
-            <Button type={"submit"} className="mt-4 !w-[150px] p-4">
-              Simpan
+            <Button
+              type={"submit"}
+              className="mt-4 !w-[150px] p-4"
+              disabled={isLoading}
+            >
+              {isLoading ? "Loading..." : "Simpan"}
             </Button>
           </div>
         </form>

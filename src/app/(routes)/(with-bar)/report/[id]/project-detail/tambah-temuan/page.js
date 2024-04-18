@@ -13,6 +13,7 @@ export default function AddTemuan({ params }) {
   const { token } = useContext(AuthContext);
   const reportId = params.id;
   const [selectedImages, setSelectedImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [quillContent, setQuillContent] = useState({
     target: "",
     description: "",
@@ -95,6 +96,7 @@ export default function AddTemuan({ params }) {
   };
 
   const onSubmit = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
     // get all values from input and set it on formData state
 
@@ -125,6 +127,8 @@ export default function AddTemuan({ params }) {
     } catch (error) {
       console.log(error);
       toast.error(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -236,8 +240,12 @@ export default function AddTemuan({ params }) {
             content={quillContent.reference}
           />
 
-          <Button type={"submit"} className="mt-4 !w-[150px] self-end p-4">
-            Tambahkan
+          <Button
+            type={"submit"}
+            className="mt-4 !w-[150px] self-end p-4"
+            disabled={isLoading}
+          >
+            {isLoading ? "Loading..." : "Tambahkan"}
           </Button>
         </form>
       </div>

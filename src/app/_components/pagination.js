@@ -5,10 +5,6 @@ export default function PaginationControls({
   totalPages,
   handlePagination,
 }) {
-  useEffect(() => {
-    console.log(currPage);
-  }, [currPage]);
-
   const renderPageNumbers = () => {
     const pagNumbers = [];
 
